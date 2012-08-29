@@ -1,0 +1,29 @@
+./wpa_supplicant -D nl80211 -i wlan3 -c wpa_supplicant_mini.conf
+capability_list e8:39:35:95:9d:30
+capability_list e8:39:35:95:9d:20
+hs20_anqp_get e8:39:35:95:9d:30 3
+venue_name e8:39:35:95:9d:30
+
+network_auth_type e8:39:35:95:9d:30
+
+roaming_consortium_list e8:39:35:95:9d:30
+
+ipaddr_type_availability e8:39:35:95:9d:30
+
+nai_realm_list e8:39:35:95:9d:30
+
+3gpp_cellular_network e8:39:35:95:9d:30
+
+domain_name_list e8:39:35:95:9d:30
+
+capability_list e8:39:35:95:9d:30
+
+anqp_get e8:39:35:95:9d:30 258,270
+
+operator_friendly_name e8:39:35:95:9d:30
+
+nai_home_realm_list e8:39:35:95:9d:30 realm=mail.example.com
+
+tdls_discover 08:2e:5f:1a:5e:18 
+
+tdls_setup e8:39:35:95:9d:30
