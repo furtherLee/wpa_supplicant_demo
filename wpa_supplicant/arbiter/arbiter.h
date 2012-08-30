@@ -26,7 +26,7 @@ typedef struct{
 
 arbiter *arbiter_init(struct wpa_supplicant *wpa_s);
 void arbiter_deinit(arbiter *arb);
-struct wpa_bss *arbiter_select(struct dl_list *list, int *count);
+struct wpa_bss *arbiter_select(struct dl_list *list);
 
 
 #endif

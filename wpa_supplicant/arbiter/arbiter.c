@@ -32,7 +32,7 @@ void arbiter_deinit(arbiter *arb){
   os_free(arb);
 }
 
-struct wpa_bss *arbiter_select(struct dl_list *list, int *count){
+struct wpa_bss *arbiter_select(struct dl_list *list){
   // TODO
   return NULL;
 }
