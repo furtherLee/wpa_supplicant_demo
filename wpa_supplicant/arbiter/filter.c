@@ -1,6 +1,7 @@
 #include "includes.h"
 #include "filter.h"
 #include "utils/list.h"
+#include "util.h"
 
 void remove_candidate(filter_candidate *candidate){
   // TODO
@@ -37,7 +38,24 @@ struct dl_list* random_filter(struct dl_list *candidates, void *context){
 }
 
 struct dl_list* access_internet_filter(struct dl_list *candidates, void *context){
-  // TODO
+  filter_candidate *item = NULL;
+  filter_candidate *wait_to_delete = NULL;
+  dl_list_for_each(item, candidates, filter_candidate, list){
+    if(wait_to_delete){
+      dl_list_del(&wait_to_delete->list);
+      os_free(wait_to_delete);
+      wait_to_delete = NULL;
+    }
+    if (!ie_interworking_internet(item->bss))
+      wait_to_delete = item;
+  }
+
+  if(wait_to_delete){
+    dl_list_del(&wait_to_delete->list);
+    os_free(wait_to_delete);
+    wait_to_delete = NULL;
+  }
+
   return candidates;
 }
 
