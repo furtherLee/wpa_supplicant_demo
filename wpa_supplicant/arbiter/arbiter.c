@@ -4,6 +4,7 @@
 #include "utils/list.h"
 #include "../wpa_supplicant_i.h"
 #include "../bss.h"
+#include "../interworking.h"
 #include "arbiter.h"
 
 static void event_init(struct wpa_supplicant *wpa_s){
@@ -52,5 +53,5 @@ struct wpa_bss *arbiter_select(struct dl_list *list, struct wpa_supplicant *wpa_
 }
 
 void arbiter_disconnect_occur(struct wpa_supplicant *wpa_s){
-  // TODO
+  interworking_select(wpa_s, 1);
 }
