@@ -14,6 +14,9 @@ enum arbiter_state{
   ARBITER_STATE_LAST,
 };
 
+struct dl_list;
+struct wpa_bss;
+
 typedef struct{
   enum arbiter_state state;
   struct wpa_supplicant *wpa_s;
@@ -23,5 +26,7 @@ typedef struct{
 
 arbiter *arbiter_init(struct wpa_supplicant *wpa_s);
 void arbiter_deinit(arbiter *arb);
+struct wpa_bss *arbiter_select(struct dl_list *list);
+
 
 #endif
