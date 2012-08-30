@@ -29,6 +29,7 @@ arbiter *arbiter_init(struct wpa_supplicant *wpa_s){
 }
 
 void arbiter_deinit(arbiter *arb){
+  event_deinit(arb->wpa_s);
   os_free(arb);
 }
 
@@ -36,9 +37,10 @@ struct wpa_bss *arbiter_select(struct dl_list *list, struct wpa_supplicant *wpa_
   int i;
   struct dl_list *ret = list;
   arbiter *arbiter = wpa_s->arbiter;
+  arbiter->state = ARBITER_DECIDING;
   for(i = 0; i < arbiter->filter_num; ++i)
     ret = arbiter->filters[i](list, wpa_s);
-  
+  arbiter->state = ARBITER_IDLE;
   if (dl_list_empty(ret))
     return NULL;
   else

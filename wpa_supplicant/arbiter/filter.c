@@ -19,6 +19,12 @@ struct dl_list* random_filter(struct dl_list *candidates, void *context){
   return NULL;
 }
 
+struct dl_list* access_internet_filter(struct dl_list *candidates, void *context){
+  // TODO
+  return NULL;
+}
+
+
 filter_candidate* build_candidate(struct wpa_bss *bss){
   filter_candidate *ret = (filter_candidate *)os_malloc(sizeof(filter_candidate));
   if (ret == NULL)

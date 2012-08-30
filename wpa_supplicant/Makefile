@@ -64,6 +64,7 @@ ifdef CONFIG_ARBITER
 OBJS += arbiter/arbiter.o
 OBJS += arbiter/filter.o
 OBJS += arbiter/util.o
+CFLAGS += -DCONFIG_ARBITER
 endif
 
 ifndef CONFIG_OS

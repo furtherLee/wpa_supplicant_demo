@@ -17,7 +17,7 @@ enum arbiter_state{
 struct dl_list;
 struct wpa_bss;
 
-typedef struct{
+typedef struct arbiter_type{
   enum arbiter_state state;
   struct wpa_supplicant *wpa_s;
   int filter_num;
