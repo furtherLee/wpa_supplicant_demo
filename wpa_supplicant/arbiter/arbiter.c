@@ -43,6 +43,10 @@ struct wpa_bss *arbiter_select(struct dl_list *list, struct wpa_supplicant *wpa_
   arbiter->state = ARBITER_IDLE;
   if (dl_list_empty(ret))
     return NULL;
-  else
-    return dl_list_first(ret, filter_candidate, list)->bss;
+
+  filter_candidate *candidate = dl_list_first(ret, filter_candidate, list);
+  struct wpa_bss *ans = candidate->bss;
+  os_free(candidate);
+
+  return ans;
 }
