@@ -19,4 +19,8 @@ void remove_candidate(filter_candidate *candidate);
 
 void add_candidate(struct dl_list *list, filter_candidate *candidate);
 
+struct dl_list* consortium_filter(struct dl_list *candidates, void *context);
+
+struct dl_list* random_filter(struct dl_list *candidates, void *context);
+
 #endif
