@@ -1,12 +1,13 @@
 #include "includes.h"
 #include "filter.h"
+#include "utils/list.h"
 
 void remove_candidate(filter_candidate *candidate){
   // TODO
 }
 
 void add_candidate(struct dl_list *list, filter_candidate *candidate){
-  // TODO
+  dl_list_add_tail(list, &candidate->list);
 }
 
 struct dl_list* consortium_filter(struct dl_list *candidates, void *context){

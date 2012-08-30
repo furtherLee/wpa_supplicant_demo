@@ -878,7 +878,6 @@ static void interworking_select_network(struct wpa_supplicant *wpa_s)
 
 		if (candidate != NULL && wpa_s->auto_select)
 		  add_candidate(&candidates, candidate);
-		  dl_list_add_tail(&candidates, &candidate->list);		
 	}
 
 	if (count == 0) {
