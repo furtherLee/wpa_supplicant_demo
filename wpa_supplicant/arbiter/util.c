@@ -1,5 +1,5 @@
 #include "includes.h"
-#include "arbiter/util.h"
+#include "util.h"
 
 void arbiter_message(struct wpa_supplicant *wpa_s, char* content){
   // TODO
