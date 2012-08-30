@@ -4,6 +4,8 @@
 #include "wpa_supplicant_i.h"
 #include "arbiter/filter.h"
 
+#define ROAM_WAIT_TIME 5
+
 enum arbiter_state{
   ARBITER_IDLE,
   ARBITER_QUERYING,
