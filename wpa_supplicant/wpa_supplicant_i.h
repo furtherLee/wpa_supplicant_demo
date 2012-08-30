@@ -529,6 +529,11 @@ struct wpa_supplicant {
 	u8 last_gtk[32];
 	size_t last_gtk_len;
 #endif /* CONFIG_TESTING_GET_GTK */
+
+#ifdef CONFIG_ARBITER
+  arbiter *arbiter;
+#endif
+
 };
 
 
