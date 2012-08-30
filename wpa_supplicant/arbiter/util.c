@@ -1,5 +1,6 @@
 #include "includes.h"
 #include "util.h"
+#include "../bss.h"
 
 static FILE *msg_file = NULL;
 
@@ -25,4 +26,20 @@ void arbiter_message(struct wpa_supplicant *wpa_s, char* content){
 int parse_oui(int **ans, struct wpabuf* buf){
   // TODO
   return 0;
+}
+
+int ie_enable_interworking(struct wpa_bss *bss){
+  const u8* pos = wpa_bss_get_ie(bss, EXTENDED_CAPABILITIES_IE_ID);
+  if (pos == NULL)
+    return 0;
+  const u8* ie = pos + 2;
+  return ie[4] & 0x80;
+}
+
+int ie_interworking_internet(struct wpa_bss *bss){
+  const u8* pos = wpa_bss_get_ie(bss, INTERWORKING_IE_ID);
+  if (pos == NULL)
+    return 0;
+  const u8* ie = pos + 2;
+  return ie[0] & 0x08;
 }

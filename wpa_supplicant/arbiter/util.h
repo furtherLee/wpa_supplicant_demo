@@ -1,6 +1,9 @@
 #ifndef _ARBITER_UTIL_
 #define _ARBITER_UTIL_
 
+#define EXTENDED_CAPABILITIES_IE_ID 127 
+#define INTERWORKING_IE_ID 107
+
 #include "includes.h"
 #include "common.h"
 #include "../wpa_supplicant_i.h"
@@ -9,5 +12,9 @@
 void arbiter_message(struct wpa_supplicant *wpa_s, char* content);
 
 int parse_oui(int **ans, struct wpabuf* buf);
+
+int ie_enable_interworking(struct wpa_bss *bss);
+
+int ie_interworking_internet(struct wpa_bss *bss);
 
 #endif
