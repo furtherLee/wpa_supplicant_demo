@@ -33,7 +33,7 @@ int ie_enable_interworking(struct wpa_bss *bss){
   if (pos == NULL)
     return 0;
   const u8* ie = pos + 2;
-  return ie[4] & 0x80;
+  return pos[1] >= 4 && (ie[3] & 0x80);
 }
 
 int ie_interworking_internet(struct wpa_bss *bss){
@@ -41,5 +41,5 @@ int ie_interworking_internet(struct wpa_bss *bss){
   if (pos == NULL)
     return 0;
   const u8* ie = pos + 2;
-  return ie[0] & 0x08;
+  return pos[1] >= 1 && (ie[0] & 0x08);
 }
