@@ -60,6 +60,12 @@ OBJS_c = wpa_cli.o ../src/common/wpa_ctrl.o
 OBJS_c += ../src/utils/wpa_debug.o
 OBJS_c += ../src/utils/common.o
 
+ifdef CONFIG_ARBITER
+OBJS += arbiter/arbiter.o
+OBJS += arbiter/filter.o
+OBJS += arbiter/util.o
+endif
+
 ifndef CONFIG_OS
 ifdef CONFIG_NATIVE_WINDOWS
 CONFIG_OS=win32
