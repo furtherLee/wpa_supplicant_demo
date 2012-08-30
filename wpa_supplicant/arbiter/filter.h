@@ -4,6 +4,7 @@
 #include "includes.h"
 #include "common.h"
 #include "utils/list.h"
+#include "../wpa_supplicant_i.h"
 #include "../bss.h"
 
 #define MAX_ARBITER_CANDIDATE_NAME_LEN 256

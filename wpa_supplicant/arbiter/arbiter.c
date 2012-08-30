@@ -1,8 +1,9 @@
 #include "includes.h"
 #include "common.h"
 #include "common/ieee802_11_defs.h"
-#include "../bss.h"
 #include "utils/list.h"
+#include "../wpa_supplicant_i.h"
+#include "../bss.h"
 #include "arbiter.h"
 
 static void event_init(struct wpa_supplicant *wpa_s){
@@ -23,7 +24,7 @@ arbiter *arbiter_init(struct wpa_supplicant *wpa_s){
   res->filter_num = 2;
   res->filters[0] = consortium_filter;
   res->filters[1] = random_filter;
-  event_init();
+  event_init(wpa_s);
   return res;
 }
 
