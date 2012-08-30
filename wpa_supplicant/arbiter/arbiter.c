@@ -17,5 +17,5 @@ arbiter *arbiter_init(struct wpa_supplicant *wpa_s){
 }
 
 void arbiter_deinit(arbiter *arb){
-  // TODO
+  os_free(arb);
 }
