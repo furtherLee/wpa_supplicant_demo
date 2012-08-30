@@ -18,5 +18,6 @@ Cooperation with Gnome Network Manager
 Gnome Network Manager is now a client for showing how `Arbiter` select an AP using hotspot 2.0. It will show up a window to record every step in the algorithm. The communication between `wpa_supplicant` and `Network Manager` is via `dbus`. More details are in the project of the second part.
 
 License: [BSD](http://opensource.org/licenses/bsd-3-clause) and [GPL2](http://www.gnu.org/licenses/gpl-2.0.html)
+
 Author: [Further Lee](http://github.com/furtherLee)
 
