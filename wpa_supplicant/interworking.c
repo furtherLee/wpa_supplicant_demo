@@ -885,7 +885,7 @@ static void interworking_select_network(struct wpa_supplicant *wpa_s)
 			"with matching credentials found");
 	}
 
-	selected = arbiter_select(&candidates);
+	selected = arbiter_select(&candidates, wpa_s);
 
 	if (selected)
 		interworking_connect(wpa_s, selected);

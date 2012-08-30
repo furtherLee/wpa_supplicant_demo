@@ -22,7 +22,7 @@ arbiter *arbiter_init(struct wpa_supplicant *wpa_s){
   res->state = ARBITER_IDLE;
   res->wpa_s = wpa_s;
   res->filter_num = 2;
-  res->filters[0] = consortium_filter;
+  res->filters[0] = access_internet_filter;
   res->filters[1] = random_filter;
   event_init(wpa_s);
   return res;
@@ -32,7 +32,15 @@ void arbiter_deinit(arbiter *arb){
   os_free(arb);
 }
 
-struct wpa_bss *arbiter_select(struct dl_list *list){
-  // TODO
-  return NULL;
+struct wpa_bss *arbiter_select(struct dl_list *list, struct wpa_supplicant *wpa_s){
+  int i;
+  struct dl_list *ret = list;
+  arbiter *arbiter = wpa_s->arbiter;
+  for(i = 0; i < arbiter->filter_num; ++i)
+    ret = arbiter->filters[i](list, wpa_s);
+  
+  if (dl_list_empty(ret))
+    return NULL;
+  else
+    return dl_list_first(ret, filter_candidate, list)->bss;
 }

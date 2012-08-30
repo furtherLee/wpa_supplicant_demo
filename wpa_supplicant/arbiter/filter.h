@@ -24,6 +24,8 @@ struct dl_list* consortium_filter(struct dl_list *candidates, void *context);
 
 struct dl_list* random_filter(struct dl_list *candidates, void *context);
 
+struct dl_list* access_internet_filter(struct dl_list *candidates, void *context);
+
 filter_candidate* build_candidate(struct wpa_bss *bss);
 
 #endif
