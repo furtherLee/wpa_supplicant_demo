@@ -7,6 +7,7 @@
 #include "utils/wpabuf.h"
 
 void arbiter_message(struct wpa_supplicant *wpa_s, char* content);
+
 int parse_oui(int **ans, struct wpabuf* buf);
 
 #endif
