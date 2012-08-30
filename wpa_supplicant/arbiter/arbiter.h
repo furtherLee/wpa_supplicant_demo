@@ -27,6 +27,6 @@ typedef struct arbiter_type{
 arbiter *arbiter_init(struct wpa_supplicant *wpa_s);
 void arbiter_deinit(arbiter *arb);
 struct wpa_bss *arbiter_select(struct dl_list *list, struct wpa_supplicant *wpa_s);
-
+void arbiter_disconnect_occur(struct wpa_supplicant *wpa_s);
 
 #endif

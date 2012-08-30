@@ -50,3 +50,7 @@ struct wpa_bss *arbiter_select(struct dl_list *list, struct wpa_supplicant *wpa_
 
   return ans;
 }
+
+void arbiter_disconnect_occur(struct wpa_supplicant *wpa_s){
+  // TODO
+}
