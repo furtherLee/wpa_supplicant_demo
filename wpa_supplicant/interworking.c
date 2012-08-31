@@ -29,7 +29,7 @@
 #include "gas_query.h"
 #include "hs20_supplicant.h"
 #include "interworking.h"
-
+#include "arbiter/arbiter.h"
 
 #if defined(EAP_SIM) | defined(EAP_SIM_DYNAMIC)
 #define INTERWORKING_3GPP
@@ -867,20 +867,28 @@ static void interworking_select_network(struct wpa_supplicant *wpa_s)
 
 	wpa_s->network_select = 0;
 
+	struct dl_list candidates;
+	dl_list_init(&candidates);
+
 	dl_list_for_each(bss, &wpa_s->bss, struct wpa_bss, list) {
 		if (!interworking_credentials_available(wpa_s, bss))
 			continue;
 		count++;
 		wpa_msg(wpa_s, MSG_INFO, INTERWORKING_AP MACSTR,
 			MAC2STR(bss->bssid));
-		if (selected == NULL && wpa_s->auto_select)
-			selected = bss;
+
+		filter_candidate *candidate = build_candidate(bss);
+
+		if (candidate != NULL && wpa_s->auto_select)
+		  add_candidate(&candidates, candidate);
 	}
 
 	if (count == 0) {
 		wpa_msg(wpa_s, MSG_INFO, INTERWORKING_NO_MATCH "No network "
 			"with matching credentials found");
 	}
+
+	selected = arbiter_select(&candidates, wpa_s);
 
 	if (selected)
 		interworking_connect(wpa_s, selected);

@@ -45,7 +45,7 @@
 #include "bss.h"
 #include "scan.h"
 #include "offchannel.h"
-
+#include "arbiter/arbiter.h"
 
 static int wpa_supplicant_select_config(struct wpa_supplicant *wpa_s)
 {
@@ -2005,6 +2005,9 @@ void wpa_supplicant_event(void *ctx, enum wpa_event_type event,
 		}
 		if (wpa_s->drv_flags & WPA_DRIVER_FLAGS_SME)
 			sme_event_disassoc(wpa_s, data);
+#ifdef CONFIG_ARBITER
+		arbiter_disconnect_occur(wpa_s);
+#endif
 		/* fall through */
 	case EVENT_DEAUTH:
 		if (event == EVENT_DEAUTH) {

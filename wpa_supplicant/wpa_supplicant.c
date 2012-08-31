@@ -28,6 +28,7 @@
 #include "eloop.h"
 #include "config.h"
 #include "l2_packet/l2_packet.h"
+#include "arbiter/arbiter.h"
 #include "wpa_supplicant_i.h"
 #include "driver_i.h"
 #include "ctrl_iface.h"
@@ -53,6 +54,7 @@
 #include "scan.h"
 #include "offchannel.h"
 #include "hs20_supplicant.h"
+#include "arbiter/arbiter.h"
 
 const char *wpa_supplicant_version =
 "wpa_supplicant v" VERSION_STR "\n"
@@ -478,6 +480,10 @@ static void wpa_supplicant_cleanup(struct wpa_supplicant *wpa_s)
 
 	os_free(wpa_s->bssid_filter);
 	wpa_s->bssid_filter = NULL;
+#ifdef CONFIG_ARBITER
+	arbiter_deinit(wpa_s->arbiter);
+	wpa_s->arbiter = NULL;
+#endif
 }
 
 
@@ -2396,7 +2402,10 @@ next_driver:
 
 	if (wpa_bss_init(wpa_s) < 0)
 		return -1;
-
+#ifdef CONFIG_ARBITER
+	arbiter* arbiter = arbiter_init(wpa_s);
+	wpa_s->arbiter = arbiter;
+#endif
 	return 0;
 }
 

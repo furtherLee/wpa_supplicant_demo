@@ -38,6 +38,7 @@ struct scan_info;
 struct wpa_bss;
 struct wpa_scan_results;
 struct hostapd_hw_modes;
+struct arbiter_type;
 
 /*
  * Forward declarations of private structures used within the ctrl_iface
@@ -529,6 +530,11 @@ struct wpa_supplicant {
 	u8 last_gtk[32];
 	size_t last_gtk_len;
 #endif /* CONFIG_TESTING_GET_GTK */
+
+#ifdef CONFIG_ARBITER
+  struct arbiter_type *arbiter;
+#endif
+
 };
 
 
