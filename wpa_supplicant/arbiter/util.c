@@ -43,7 +43,7 @@ int ie_interworking_internet(struct wpa_bss *bss){
   if (pos == NULL)
     return 0;
   const u8* ie = pos + 2;
-  return pos[1] >= 1 && (ie[0] & 0x08);
+  return pos[1] >= 1 && (ie[0] & 0x10);
 }
 
 void display_candidates(struct wpa_supplicant *wpa_s, struct dl_list *list){
