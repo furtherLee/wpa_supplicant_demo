@@ -22,6 +22,9 @@ struct dl_list* random_filter(struct dl_list *candidates, void *context){
   filter_candidate *ret = NULL;
   filter_candidate *pointer = NULL;
   int i = 0;
+  
+  arbiter_message((struct wpa_supplicant *)context, "Random Filter starts working...");
+
   while(!dl_list_empty(candidates)){
     pointer = dl_list_first(candidates, filter_candidate, list);
     dl_list_del(&pointer->list);
@@ -40,6 +43,9 @@ struct dl_list* random_filter(struct dl_list *candidates, void *context){
 struct dl_list* access_internet_filter(struct dl_list *candidates, void *context){
   filter_candidate *item = NULL;
   filter_candidate *wait_to_delete = NULL;
+
+  arbiter_message((struct wpa_supplicant *)context, "Accessing Internet Filter starts working...");
+
   dl_list_for_each(item, candidates, filter_candidate, list){
     if(wait_to_delete){
       dl_list_del(&wait_to_delete->list);

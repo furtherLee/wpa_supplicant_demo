@@ -1,5 +1,6 @@
 #include "includes.h"
 #include "util.h"
+#include "filter.h"
 #include "../bss.h"
 
 static FILE *msg_file = NULL;
@@ -20,6 +21,7 @@ static void local_message(struct wpa_supplicant *wpa_s, char *content){
 
 void arbiter_message(struct wpa_supplicant *wpa_s, char* content){
   local_message(wpa_s, content);
+  wpa_msg(wpa_s, MSG_INFO, "%s", content);
   // TODO transfer to dbus messager
 }
 
@@ -42,4 +44,10 @@ int ie_interworking_internet(struct wpa_bss *bss){
     return 0;
   const u8* ie = pos + 2;
   return pos[1] >= 1 && (ie[0] & 0x08);
+}
+
+void display_candidates(struct wpa_supplicant *wpa_s, struct dl_list *list){
+  filter_candidate *item = NULL;
+  dl_list_for_each(item, list, filter_candidate, list)
+    arbiter_message(wpa_s, (char *)item->bss->ssid);
 }
