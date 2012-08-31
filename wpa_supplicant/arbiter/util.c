@@ -48,6 +48,8 @@ int ie_interworking_internet(struct wpa_bss *bss){
 
 void display_candidates(struct wpa_supplicant *wpa_s, struct dl_list *list){
   filter_candidate *item = NULL;
+  if (dl_list_empty(list))
+    arbiter_message(wpa_s, "No network Left!");
   dl_list_for_each(item, list, filter_candidate, list)
     arbiter_message(wpa_s, (char *)item->bss->ssid);
 }

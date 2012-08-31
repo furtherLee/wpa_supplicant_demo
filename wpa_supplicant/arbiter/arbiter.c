@@ -49,11 +49,15 @@ struct wpa_bss *arbiter_select(struct dl_list *list, struct wpa_supplicant *wpa_
     ret = arbiter->filters[i](list, wpa_s);
     arbiter_message(wpa_s, "Arbiter: After this filter, candidates left are:");
     display_candidates(wpa_s, ret);
+    if(dl_list_empty(ret))
+      break;
   }
 
   arbiter->state = ARBITER_IDLE;
-  if (dl_list_empty(ret))
+  if (dl_list_empty(ret)){
+    arbiter_message(wpa_s, "Arbiter: No network can be selected after all filters!");
     return NULL;
+  }
 
   filter_candidate *candidate = dl_list_first(ret, filter_candidate, list);
   struct wpa_bss *ans = candidate->bss;
