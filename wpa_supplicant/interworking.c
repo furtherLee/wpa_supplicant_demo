@@ -93,7 +93,7 @@ static int interworking_anqp_send_req(struct wpa_supplicant *wpa_s,
 	int ret = 0;
 	int res;
 	u16 info_ids[] = {
-		ANQP_CAPABILITY_LIST,
+	  //		ANQP_CAPABILITY_LIST,
 		ANQP_VENUE_NAME,
 		ANQP_NETWORK_AUTH_TYPE,
 		ANQP_ROAMING_CONSORTIUM,
@@ -818,6 +818,8 @@ static int interworking_credentials_available_realm(
 	struct nai_realm *realm;
 	u16 count, i;
 	int found = 0;
+	
+	wpa_printf(MSG_DEBUG, "my home_realm: %s and " MACSTR " %s have a realm_list", wpa_s->conf->home_realm, MAC2STR(bss->bssid), bss->anqp_nai_realm == NULL? "don't" : "do");
 
 	if (bss->anqp_nai_realm == NULL)
 		return 0;
@@ -835,6 +837,7 @@ static int interworking_credentials_available_realm(
 	}
 
 	for (i = 0; i < count; i++) {
+	  wpa_printf(MSG_DEBUG,"a realm of " MACSTR " is %s", MAC2STR(bss->bssid), realm[i].realm);
 		if (!nai_realm_match(&realm[i], wpa_s->conf->home_realm))
 			continue;
 		if (nai_realm_find_eap(wpa_s, &realm[i])) {
