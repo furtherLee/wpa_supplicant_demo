@@ -2,12 +2,18 @@
 #include "util.h"
 #include "filter.h"
 #include "../bss.h"
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <stdlib.h>
+#include <errno.h>
 
 static FILE *msg_file = NULL;
 
 static const char msg_file_path[] = "/tmp/arbiter_msg.log";
 
-static const char *PIPE = "/tmp/arbiter/fifo";
+static const char *PIPE = "/tmp/arbiter_fifo";
 
 static int PIPE_FD = -1;
 
@@ -26,7 +32,7 @@ static void local_message(struct wpa_supplicant *wpa_s, char *content){
 static void fifo_message(struct wpa_supplicant *wpa_s, char *content){
   if(PIPE_FD == -1)
     PIPE_FD = open(PIPE, O_WRONLY);
-  write(PIPE_FD, content, sizeof(content);
+  write(PIPE_FD, content, sizeof(content));
 }
 
 void arbiter_message(struct wpa_supplicant *wpa_s, char* content){
