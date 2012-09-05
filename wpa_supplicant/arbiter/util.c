@@ -33,11 +33,13 @@ static void fifo_message(struct wpa_supplicant *wpa_s, char *content){
   if(PIPE_FD == -1)
     PIPE_FD = open(PIPE, O_WRONLY);
   write(PIPE_FD, content, os_strlen(content));
+  wpa_printf(MSG_INFO, "Arbiter fifo Write:%s", content);
+
 }
 
 void arbiter_message(struct wpa_supplicant *wpa_s, char* content){
   local_message(wpa_s, content);
-  //  fifo_message(wpa_s, content);
+  // fifo_message(wpa_s, content);
   wpa_msg(wpa_s, MSG_INFO, "%s", content);
   // TODO transfer to dbus messager
 }
