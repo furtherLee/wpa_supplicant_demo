@@ -41,13 +41,13 @@ struct wpa_bss *arbiter_select(struct dl_list *list, struct wpa_supplicant *wpa_
   struct dl_list *ret = list;
   arbiter *arbiter = wpa_s->arbiter;
   arbiter->state = ARBITER_DECIDING;
-  arbiter_message(wpa_s, "Arbiter: All information retrieved, start selecting process.");
-  arbiter_message(wpa_s, "Arbiter: All interworking networks available are:");
+  arbiter_message(wpa_s, "All information retrieved, start selecting process.");
+  arbiter_message(wpa_s, "All interworking networks available are:");
   display_candidates(wpa_s, ret);
 
   for(i = 0; i < arbiter->filter_num; ++i){
     ret = arbiter->filters[i](list, wpa_s);
-    arbiter_message(wpa_s, "Arbiter: After this filter, candidates left are:");
+    arbiter_message(wpa_s, "After this filter, candidates left are:");
     display_candidates(wpa_s, ret);
     if(dl_list_empty(ret))
       break;
@@ -55,7 +55,7 @@ struct wpa_bss *arbiter_select(struct dl_list *list, struct wpa_supplicant *wpa_
 
   arbiter->state = ARBITER_IDLE;
   if (dl_list_empty(ret)){
-    arbiter_message(wpa_s, "Arbiter: No network can be selected after all filters!");
+    arbiter_message(wpa_s, "No network can be selected after all filters!");
     return NULL;
   }
 
@@ -68,7 +68,7 @@ struct wpa_bss *arbiter_select(struct dl_list *list, struct wpa_supplicant *wpa_
 
 void arbiter_disconnect_occur(struct wpa_supplicant *wpa_s){
   wpa_s->arbiter->state = ARBITER_QUERYING;
-  arbiter_message(wpa_s, "Arbiter: Detect DISCONNECT! Arbiter start to handle network selection!");
-  arbiter_message(wpa_s, "Arbiter: Arbiter starts to fetch all anqp information");
+  arbiter_message(wpa_s, "Detect DISCONNECT! Arbiter start to handle network selection!");
+  arbiter_message(wpa_s, "Arbiter starts to fetch all anqp information");
   interworking_select(wpa_s, 1);
 }

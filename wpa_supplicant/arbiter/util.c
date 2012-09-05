@@ -40,7 +40,7 @@ static void fifo_message(struct wpa_supplicant *wpa_s, char *content){
 void arbiter_message(struct wpa_supplicant *wpa_s, char* content){
   local_message(wpa_s, content);
   // fifo_message(wpa_s, content);
-  wpa_msg(wpa_s, MSG_INFO, "%s", content);
+  wpa_msg(wpa_s, MSG_INFO, "Arbiter: %s", content);
   // TODO transfer to dbus messager
 }
 

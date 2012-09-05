@@ -21,9 +21,13 @@ public slots:
 protected slots:
   virtual void languageChange();
 
+private slots:
+  virtual void interworkingSelect();
+
 private:
   void binding();
   void update();
+  void append(QString str);
 
 public:
   virtual void notify(WpaMsg msg);

@@ -822,11 +822,6 @@ static int interworking_credentials_available_realm(
 	
 	wpa_printf(MSG_DEBUG, "my home_realm: %s and " MACSTR " %s have a realm_list", wpa_s->conf->home_realm, MAC2STR(bss->bssid), bss->anqp_nai_realm == NULL? "don't" : "do");
 	
-	char str[512];
-	os_snprintf(str, 512, "my home_realm: %s and %s %s have a realm_list", wpa_s->conf->home_realm, bss->ssid, bss->anqp_nai_realm == NULL? "don't" : "do");
-	
-	arbiter_message(wpa_s, str);
-
 	if (bss->anqp_nai_realm == NULL)
 		return 0;
 

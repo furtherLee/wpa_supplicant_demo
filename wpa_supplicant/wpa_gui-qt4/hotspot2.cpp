@@ -11,6 +11,7 @@
 
 void Hotspot2::binding(){
   connect(closeButton, SIGNAL(clicked()), this, SLOT(close()));
+  connect(autoSelectButton, SIGNAL(clicked()), this, SLOT(interworkingSelect()));
   // TODO
 }
 
@@ -26,10 +27,16 @@ Hotspot2::Hotspot2(QWidget *parent, const char *, bool, Qt::WFlags)
   // TODO
 }
 
-void Hotspot2::notify(WpaMsg msg){
-  bool scroll = true;
+void Hotspot2::interworkingSelect(){
+  char reply[64];
+  size_t reply_len;
+  wpagui->ctrlRequest("INTERWORKING_SELECT auto", reply, &reply_len);
+}
 
-  arbiterInfoText->append(msg.getMsg());
+void Hotspot2::append(QString str){
+  bool scroll = true;
+  
+  arbiterInfoText->append(str);
   
   QScrollBar *sb = arbiterInfoText->verticalScrollBar();
 
@@ -39,6 +46,14 @@ void Hotspot2::notify(WpaMsg msg){
   
   if (scroll)
     sb->setValue(sb->maximum());
+
+}
+
+void Hotspot2::notify(WpaMsg msg){
+  QString str = msg.getMsg();
+  if(!str.startsWith("Arbiter: "))
+    return;
+  append(str);
 }
 
 Hotspot2::~Hotspot2()
