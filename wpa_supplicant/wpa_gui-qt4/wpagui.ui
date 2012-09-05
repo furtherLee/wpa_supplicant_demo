@@ -520,6 +520,7 @@
   <include location="local">eventhistory.h</include>
   <include location="local">scanresults.h</include>
   <include location="local">peers.h</include>
+  <include location="local">hotspot2.h</include>
  </includes>
  <resources>
   <include location="icons.qrc"/>

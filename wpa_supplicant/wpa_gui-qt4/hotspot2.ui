@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>Hotspot2Dialog</class>
  <widget class="QDialog" name="Hotspot2Dialog">
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -17,6 +20,9 @@
   </property>
   <property name="windowTitle">
    <string>Hotspot 2.0</string>
+  </property>
+  <property name="sizeGripEnabled">
+   <bool>false</bool>
   </property>
   <widget class="QLabel" name="arbiterInfoLabel">
    <property name="geometry">

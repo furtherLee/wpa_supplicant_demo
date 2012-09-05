@@ -145,6 +145,13 @@ private:
 
 	QApplication *app;
 	bool inTray;
+
+ private:
+	Hotspot2 *hs20;
+ public slots:
+	virtual void openHotspot2();
+
+
 };
 
 #endif /* WPAGUI_H */

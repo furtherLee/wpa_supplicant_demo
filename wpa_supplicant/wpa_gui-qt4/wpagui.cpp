@@ -132,6 +132,10 @@ WpaGui::WpaGui(QApplication *_app, QWidget *parent, const char *, Qt::WFlags)
 		SLOT(wpsApPinChanged(const QString &)));
 	connect(wpsApPinButton, SIGNAL(clicked()), this, SLOT(wpsApPin()));
 
+	/* connect hotspot2 event*/
+	connect(hsButton, SIGNAL(clicked()), this, SLOT(openHotspot2()));
+	
+		
 	eh = NULL;
 	scanres = NULL;
 	peers = NULL;
@@ -143,6 +147,7 @@ WpaGui::WpaGui(QApplication *_app, QWidget *parent, const char *, Qt::WFlags)
 	ctrl_conn = NULL;
 	monitor_conn = NULL;
 	msgNotifier = NULL;
+	hs20 = NULL;
 	ctrl_iface_dir = strdup("/var/run/wpa_supplicant");
 
 	parse_argv();
@@ -225,6 +230,13 @@ WpaGui::~WpaGui()
 		udr = NULL;
 	}
 
+	if (hs20){
+	  hs20->close();
+	  delete hs20;
+	  hs20 = NULL;
+	}
+
+
 	free(ctrl_iface);
 	ctrl_iface = NULL;
 
@@ -232,6 +244,20 @@ WpaGui::~WpaGui()
 	ctrl_iface_dir = NULL;
 }
 
+void WpaGui::openHotspot2()
+{
+  if (hs20) {
+    hs20->close();
+    delete hs20;
+  }
+
+  hs20 = new Hotspot2();
+  if (hs20 == NULL)
+    return;
+  hs20->setWpaGui(this);
+  hs20->show();
+  hs20->exec();
+}
 
 void WpaGui::languageChange()
 {
