@@ -189,14 +189,17 @@
     <string>Found Access Points</string>
    </property>
   </widget>
-  <widget class="QTextBrowser" name="selectInfoText">
+  <widget class="QTextEdit" name="arbiterInfoText">
    <property name="geometry">
     <rect>
      <x>0</x>
-     <y>30</y>
+     <y>40</y>
      <width>1021</width>
-     <height>381</height>
+     <height>371</height>
     </rect>
+   </property>
+   <property name="readOnly">
+    <bool>true</bool>
    </property>
   </widget>
  </widget>

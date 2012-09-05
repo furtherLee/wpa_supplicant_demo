@@ -885,6 +885,8 @@ void WpaGui::processMsg(char *msg)
 	WpaMsg wm(pos, priority);
 	if (eh)
 		eh->addEvent(wm);
+	if (hs20)
+	  hs20->notify(wm);
 	if (peers)
 		peers->event_notify(wm);
 	msgs.append(wm);

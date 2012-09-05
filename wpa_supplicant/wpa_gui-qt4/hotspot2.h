@@ -5,6 +5,7 @@
 #include "ui_hotspot2.h"
 
 class WpaGui;
+class WpaMsg;
 
 class Hotspot2: public QDialog, public Ui::Hotspot2Dialog{
   Q_OBJECT
@@ -21,7 +22,15 @@ protected slots:
   virtual void languageChange();
 
 private:
+  void binding();
+  void update();
+
+public:
+  virtual void notify(WpaMsg msg);
+
+private:
   WpaGui *wpagui;
+  
 };
 
 #endif
