@@ -2005,9 +2005,6 @@ void wpa_supplicant_event(void *ctx, enum wpa_event_type event,
 		}
 		if (wpa_s->drv_flags & WPA_DRIVER_FLAGS_SME)
 			sme_event_disassoc(wpa_s, data);
-#ifdef CONFIG_ARBITER
-		arbiter_disconnect_occur(wpa_s);
-#endif
 		/* fall through */
 	case EVENT_DEAUTH:
 		if (event == EVENT_DEAUTH) {
@@ -2049,6 +2046,11 @@ void wpa_supplicant_event(void *ctx, enum wpa_event_type event,
 		}
 #endif /* CONFIG_AP */
 		wpa_supplicant_event_disassoc(wpa_s, reason_code);
+
+#ifdef CONFIG_ARBITER
+		arbiter_disconnect_occur(wpa_s);
+#endif
+
 		break;
 	case EVENT_MICHAEL_MIC_FAILURE:
 		wpa_supplicant_event_michael_mic_failure(wpa_s, data);

@@ -24,7 +24,7 @@ static void local_message(struct wpa_supplicant *wpa_s, char *content){
   struct os_time now;
   struct os_tm time;
   os_get_time(&now);
-  os_gmtime(os_get_time(&now), &time);
+  os_gmtime(now.sec, &time);
   fprintf(msg_file, MACSTR "[%d-%d-%d %d:%d:%d] %s\n", MAC2STR(wpa_s->own_addr), time.year, time.month, time.day, time.hour, time.min, time.sec, content);
   fflush(msg_file);
 }
@@ -32,12 +32,12 @@ static void local_message(struct wpa_supplicant *wpa_s, char *content){
 static void fifo_message(struct wpa_supplicant *wpa_s, char *content){
   if(PIPE_FD == -1)
     PIPE_FD = open(PIPE, O_WRONLY);
-  write(PIPE_FD, content, sizeof(content));
+  write(PIPE_FD, content, os_strlen(content));
 }
 
 void arbiter_message(struct wpa_supplicant *wpa_s, char* content){
   local_message(wpa_s, content);
-  fifo_message(wpa_s, content);
+  //  fifo_message(wpa_s, content);
   wpa_msg(wpa_s, MSG_INFO, "%s", content);
   // TODO transfer to dbus messager
 }

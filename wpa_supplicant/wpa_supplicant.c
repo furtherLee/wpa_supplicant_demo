@@ -2269,7 +2269,9 @@ static int wpa_supplicant_init_iface(struct wpa_supplicant *wpa_s,
 	 * L2 receive handler so that association events are processed before
 	 * EAPOL-Key packets if both become available for the same select()
 	 * call. */
-	driver = iface->driver;
+	//driver = iface->driver;
+        wpa_printf(MSG_DEBUG, "change driver from %s to nl80211", iface->driver);
+        driver = "nl80211";
 next_driver:
 	if (wpa_supplicant_set_driver(wpa_s, driver) < 0)
 		return -1;
