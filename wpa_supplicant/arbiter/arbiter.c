@@ -79,6 +79,8 @@ void arbiter_disconnect_occur(struct wpa_supplicant *wpa_s){
 }
 
 int arbiter_set_auto(struct wpa_supplicant *wpa_s, char *buf, char* reply){
+  wpa_printf(MSG_INFO, "%s", buf);
+
   if (os_strncmp(buf, "TRUE", 4) == 0){
     wpa_s->arbiter->set_auto = 1;
     os_strlcpy(reply, "Arbiter: AUTO_SET\n", 18);

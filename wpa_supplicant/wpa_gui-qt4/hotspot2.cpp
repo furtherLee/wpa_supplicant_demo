@@ -152,7 +152,7 @@ void Hotspot2::fresh(){
 			if ((*it).startsWith("roamingConsortium="))
 			  consortiumList = (*it).mid(pos);
 
-			QStringList consortiums = consortiumList.split(QRegExp("\,"));
+			QStringList consortiums = consortiumList.split(QRegExp(","));
 			for (QStringList::Iterator con = consortiums.begin();
 			     con != consortiums.end(); con++){
 			  if ((*con).isEmpty())
