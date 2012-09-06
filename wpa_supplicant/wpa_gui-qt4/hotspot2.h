@@ -23,7 +23,8 @@ protected slots:
 
 private slots:
   virtual void interworkingSelect();
-
+  virtual void fetch();
+  
 private:
   void binding();
   void update();

@@ -69,6 +69,13 @@
      </spacer>
     </item>
     <item>
+     <widget class="QPushButton" name="fetchANQPButton">
+      <property name="text">
+       <string>Fetch ANQP</string>
+      </property>
+     </widget>
+    </item>
+    <item>
      <widget class="QPushButton" name="freshButton">
       <property name="text">
        <string>Fresh</string>
@@ -155,7 +162,7 @@
    </column>
    <column>
     <property name="text">
-     <string>Chargable</string>
+     <string>Network Access Type</string>
     </property>
    </column>
    <column>

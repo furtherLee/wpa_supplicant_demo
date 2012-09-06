@@ -13,6 +13,13 @@ void Hotspot2::binding(){
   connect(closeButton, SIGNAL(clicked()), this, SLOT(close()));
   connect(autoSelectButton, SIGNAL(clicked()), this, SLOT(interworkingSelect()));
   connect(freshButton, SIGNAL(clicked()), this, SLOT(fresh()));
+  connect(fetchANQPButton, SIGNAL(clicked()), this, SLOT(fetch()));
+}
+
+void Hotspot2::fetch(){
+  char reply[64];
+  size_t reply_len;
+  wpagui->ctrlRequest("FETCH_ANQP", reply, &reply_len);
 }
 
 void Hotspot2::update(){
@@ -51,8 +58,16 @@ void Hotspot2::append(QString str){
 
 void Hotspot2::notify(WpaMsg msg){
   QString str = msg.getMsg();
+  if (str.startsWith("ANQP fetch completed"))
+    fresh();
+  
+  /*
+   * Deal with Arbiter Message
+   */
+
   if(!str.startsWith("Arbiter: "))
     return;
+
   append(str);
 }
 
