@@ -67,6 +67,8 @@ struct wpa_bss {
 	u64 tsf;
 	struct os_time last_update;
 #ifdef CONFIG_INTERWORKING
+  // Add for fast fetching
+  int fetched;
 	struct wpabuf *anqp_venue_name;
 	struct wpabuf *anqp_network_auth_type;
 	struct wpabuf *anqp_roaming_consortium;

@@ -174,6 +174,7 @@ static void wpa_bss_add(struct wpa_supplicant *wpa_s,
 	bss->ssid_len = ssid_len;
 	bss->ie_len = res->ie_len;
 	bss->beacon_ie_len = res->beacon_ie_len;
+	bss->fetched = 0;
 	os_memcpy(bss + 1, res + 1, res->ie_len + res->beacon_ie_len);
 
 	dl_list_add_tail(&wpa_s->bss, &bss->list);
