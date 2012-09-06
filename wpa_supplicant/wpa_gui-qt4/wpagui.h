@@ -150,8 +150,7 @@ private:
 	Hotspot2 *hs20;
  public slots:
 	virtual void openHotspot2();
-
-
+	virtual void interworkingAutoSelect(bool checked);
 };
 
 #endif /* WPAGUI_H */

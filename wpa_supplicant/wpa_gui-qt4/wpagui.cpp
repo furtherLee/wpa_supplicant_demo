@@ -134,7 +134,7 @@ WpaGui::WpaGui(QApplication *_app, QWidget *parent, const char *, Qt::WFlags)
 
 	/* connect hotspot2 event*/
 	connect(hsButton, SIGNAL(clicked()), this, SLOT(openHotspot2()));
-	
+	connect(switchInterworkingSelectAction, SIGNAL(setChecked(bool)), this, SLOT(interworkingAutoSelect(bool)));
 		
 	eh = NULL;
 	scanres = NULL;
@@ -257,6 +257,21 @@ void WpaGui::openHotspot2()
   hs20->setWpaGui(this);
   hs20->show();
   hs20->exec();
+}
+
+void WpaGui::interworkingAutoSelect(bool checked){
+  char buf[64];
+  size_t buf_len;
+
+  if(checked){
+    ctrlRequest("SET_AUTO_INTERWORKING_SELECT TRUE", buf, &buf_len);
+  }
+  else{
+    ctrlRequest("SET_AUTO_INTERWORKING_SELECT FALSE", buf, &buf_len);
+  }
+
+  if (buf_len <= 0)
+    switchInterworkingSelectAction->toggle();
 }
 
 void WpaGui::languageChange()
