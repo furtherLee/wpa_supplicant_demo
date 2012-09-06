@@ -26,6 +26,7 @@ arbiter *arbiter_init(struct wpa_supplicant *wpa_s){
   res->filter_num = 2;
   res->filters[0] = access_internet_filter;
   res->filters[1] = random_filter;
+  res->set_auto = 0;
   event_init(wpa_s);
   return res;
 }
@@ -67,8 +68,27 @@ struct wpa_bss *arbiter_select(struct dl_list *list, struct wpa_supplicant *wpa_
 }
 
 void arbiter_disconnect_occur(struct wpa_supplicant *wpa_s){
+
+  if(!wpa_s->arbiter->set_auto)
+    return;
+
   wpa_s->arbiter->state = ARBITER_QUERYING;
   arbiter_message(wpa_s, "Detect DISCONNECT! Arbiter start to handle network selection!");
   arbiter_message(wpa_s, "Arbiter starts to fetch all anqp information");
   interworking_select(wpa_s, 1);
+}
+
+int arbiter_set_auto(struct wpa_supplicant *wpa_s, char *buf, char* reply){
+  if (os_strncmp(buf, "TRUE", 4) == 0){
+    wpa_s->arbiter->set_auto = 1;
+    os_memcpy(reply, "Arbiter: AUTO_SET\n", 18);
+    return 18;
+  }
+  else if (os_strncmp(buf, "FALSE", 5) == 0){
+    wpa_s->arbiter->set_auto = 1;
+    os_memcpy(reply, "Arbiter: AUTO_RESET\n", 20);
+    return 20;    
+  }
+  else
+    return -1;
 }

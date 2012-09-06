@@ -43,6 +43,7 @@
 #include "interworking.h"
 #include "blacklist.h"
 #include "wpas_glue.h"
+#include "arbiter/arbiter.h"
 
 extern struct wpa_driver_ops *wpa_drivers[];
 
@@ -3968,7 +3969,18 @@ char * wpa_supplicant_ctrl_iface_process(struct wpa_supplicant *wpa_s,
 		if (wpa_supplicant_ctrl_iface_tdls_teardown(wpa_s, buf + 14))
 			reply_len = -1;
 #endif /* CONFIG_TDLS */
-	} else if (os_strncmp(buf, "SIGNAL_POLL", 11) == 0) {
+	}
+
+	/**
+	 * Add support for Arbiter GUI
+	 * Author: Li Shijian
+	 * Modified: 2012.9.6
+	 */
+	else if (os_strncmp(buf, "SET_AUTO_INTERWORKING_SELECT ", 29) == 0){
+	  reply_len = arbiter_set_auto(wpa_s, buf+29, reply);
+	}
+	/* Support for GUI end */
+	else if (os_strncmp(buf, "SIGNAL_POLL", 11) == 0) {
 		reply_len = wpa_supplicant_signal_poll(wpa_s, reply,
 						       reply_size);
 	} else if (os_strcmp(buf, "REAUTHENTICATE") == 0) {
