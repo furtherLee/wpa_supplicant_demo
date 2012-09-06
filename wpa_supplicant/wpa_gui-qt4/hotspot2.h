@@ -29,14 +29,14 @@ private:
   void binding();
   void update();
   void append(QString str);
-  QString hs20Support(QString flags);
-  QString calcRoamingConsortium(QString str);
+  void addMap();
+  QString getConsortium(QString query);
 public:
   virtual void notify(WpaMsg msg);
 
 private:
   WpaGui *wpagui;
-  
+  QMap<QString, QString*> OUIMap;
 };
 
 #endif

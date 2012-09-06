@@ -911,6 +911,7 @@ static void interworking_next_anqp_fetch(struct wpa_supplicant *wpa_s)
 		ie = wpa_bss_get_ie(bss, WLAN_EID_EXT_CAPAB);
 		if (ie == NULL || ie[1] < 4 || !(ie[5] & 0x80))
 			continue; /* AP does not support Interworking */
+		wpa_printf(MSG_INFO, "BSS %s %d", bss->ssid, bss->fetched);
 		if (bss->fetched)
 		  continue; /* has fetched all ANQP infomation */
 		if (!(bss->flags & WPA_BSS_ANQP_FETCH_TRIED)) {
@@ -1174,6 +1175,15 @@ void anqp_resp_cb(void *ctx, const u8 *dst, u8 dialog_token,
 						slen);
 		pos += slen;
 	}
+	
+	struct wpa_bss *bss = wpa_bss_get_bssid(wpa_s, dst);
+	bss->fetched = 1;
+
+	char msg[256];
+	os_snprintf(msg, 256, "ANQP Information Received for %s(" MACSTR ")", bss->ssid, MAC2STR(bss->bssid));
+	arbiter_message(wpa_s, msg);
+
+
 }
 
 
@@ -1193,6 +1203,7 @@ int interworking_select(struct wpa_supplicant *wpa_s, int auto_select)
 	wpa_s->auto_select = !!auto_select;
 	wpa_printf(MSG_DEBUG, "Interworking: Start scan for network "
 		   "selection");
+	arbiter_message(wpa_s, "Interworking Select Start. Scanning for ANQP Information...");
 	wpa_s->scan_res_handler = interworking_scan_res_handler;
 	wpa_s->scan_req = 2;
 	wpa_supplicant_req_scan(wpa_s, 0, 0);

@@ -16,6 +16,19 @@ void Hotspot2::binding(){
   connect(fetchANQPButton, SIGNAL(clicked()), this, SLOT(fetch()));
 }
 
+void Hotspot2::addMap(){
+  OUIMap.insert("00071c", new QString("AT&T Wireless"));
+  OUIMap.insert("001bc504bd", new QString("Silicon Controls"));
+  OUIMap.insert("506f9a", new QString("Wi-Fi Alliance"));
+  OUIMap.insert("0050f2", new QString("Microsoft"));
+}
+
+QString Hotspot2::getConsortium(QString query){
+  if (!OUIMap.contains(query))
+    return query;
+  return *OUIMap.value(query);
+}
+
 void Hotspot2::fetch(){
   char reply[64];
   size_t reply_len;
@@ -31,6 +44,7 @@ Hotspot2::Hotspot2(QWidget *parent, const char *, bool, Qt::WFlags)
 {
   setupUi(this);
   binding();
+  addMap();
   // TODO
 }
 
@@ -58,7 +72,7 @@ void Hotspot2::append(QString str){
 
 void Hotspot2::notify(WpaMsg msg){
   QString str = msg.getMsg();
-  if (str.startsWith("ANQP fetch completed"))
+  if (str.startsWith("ANQP fetch completed") || str.startsWith("Arbiter: ANQP Information Received"))
     fresh();
   
   /*
@@ -86,13 +100,6 @@ void Hotspot2::setWpaGui(WpaGui *_wpagui)
 	fresh();
 }
 
-QString Hotspot2::hs20Support(QString flags){
-  if(flags.contains("HS20"))
-    return "YES";
-  else 
-    return "NO";
-}
-
 void Hotspot2::fresh(){
 	char reply[4096];
 	size_t reply_len;
@@ -112,6 +119,8 @@ void Hotspot2::fresh(){
 			break;
 		reply[reply_len] = '\0';
 
+		printf("%s\n", reply);
+
 		QString bss(reply);
 		if (bss.isEmpty() || bss.startsWith("FAIL"))
 			break;
@@ -120,7 +129,7 @@ void Hotspot2::fresh(){
 		QString ie;
 
 		/* Display String */
-		QString ssid, bssid, hs20, internet, chargable, authMethod, roamingConsortium;
+		QString ssid, bssid, hs20, internet, chargable, authMethod, roamingConsortium, consortiumList;
 
 		QStringList lines = bss.split(QRegExp("\\n"));
 		for (QStringList::Iterator it = lines.begin();
@@ -141,8 +150,15 @@ void Hotspot2::fresh(){
 			if ((*it).startsWith("authMethod="))
 			  authMethod = (*it).mid(pos);
 			if ((*it).startsWith("roamingConsortium="))
-			  roamingConsortium = (*it).mid(pos);
+			  consortiumList = (*it).mid(pos);
 
+			QStringList consortiums = consortiumList.split(QRegExp("\,"));
+			for (QStringList::Iterator con = consortiums.begin();
+			     con != consortiums.end(); con++){
+			  if ((*con).isEmpty())
+			    continue;
+			  roamingConsortium.append("[" + getConsortium(*con) + "]");
+			}
 		}
 
 		QTreeWidgetItem *item = new QTreeWidgetItem(hs20APWidget);
@@ -158,8 +174,4 @@ void Hotspot2::fresh(){
 		if (bssid.isEmpty())
 			break;
 	}
-}
-
-QString Hotspot2::calcRoamingConsortium(QString str){
-  return str;
 }
