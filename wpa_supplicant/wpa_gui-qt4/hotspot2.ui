@@ -140,6 +140,11 @@
    </column>
    <column>
     <property name="text">
+     <string>BSSID</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
      <string>Hotspot2.0 Support</string>
     </property>
    </column>

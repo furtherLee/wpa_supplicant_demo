@@ -17,7 +17,7 @@ public:
 		
 public slots:
   virtual void setWpaGui(WpaGui *_wpagui);
-						
+  virtual void fresh();
 protected slots:
   virtual void languageChange();
 
@@ -28,7 +28,8 @@ private:
   void binding();
   void update();
   void append(QString str);
-
+  QString hs20Support(QString flags);
+  QString calcRoamingConsortium(QString str);
 public:
   virtual void notify(WpaMsg msg);
 

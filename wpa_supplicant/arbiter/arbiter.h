@@ -30,5 +30,6 @@ void arbiter_deinit(arbiter *arb);
 struct wpa_bss *arbiter_select(struct dl_list *list, struct wpa_supplicant *wpa_s);
 void arbiter_disconnect_occur(struct wpa_supplicant *wpa_s);
 int arbiter_set_auto(struct wpa_supplicant *wpa_s, char* buf, char* reply);
+int arbiter_get_anqp_info(struct wpa_supplicant *wpas, char *buf, char *reply, size_t reply_size);
 
 #endif

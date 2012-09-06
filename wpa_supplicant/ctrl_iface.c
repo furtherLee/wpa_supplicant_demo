@@ -3976,6 +3976,10 @@ char * wpa_supplicant_ctrl_iface_process(struct wpa_supplicant *wpa_s,
 	 * Author: Li Shijian
 	 * Modified: 2012.9.6
 	 */
+	else if (os_strncmp(buf, "ANQP_INFO ", 10) == 0){
+		reply_len = arbiter_get_anqp_info(
+			wpa_s, buf + 10, reply, reply_size);	  
+	}
 	else if (os_strncmp(buf, "SET_AUTO_INTERWORKING_SELECT ", 29) == 0){
 	  reply_len = arbiter_set_auto(wpa_s, buf+29, reply);
 	}
