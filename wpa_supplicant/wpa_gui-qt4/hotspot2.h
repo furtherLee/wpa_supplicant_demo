@@ -40,6 +40,8 @@ private:
   WpaGui *wpagui;
   QMap<QString, QString*> OUIMap;
   QMap<QString, QString*> accessTypeMap;
+  int filterStage;
+  QMap<int, QColor*> stageColorMap;
 };
 
 #endif

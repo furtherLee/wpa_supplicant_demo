@@ -32,6 +32,10 @@ void Hotspot2::addMap(){
   accessTypeMap.insert("14", new QString("Test or Experimental"));
   accessTypeMap.insert("15", new QString("Wildcardx"));
 
+  stageColorMap.insert(0, new QColor("gainsboro"));
+  stageColorMap.insert(1, new QColor("orange"));
+  stageColorMap.insert(2, new QColor("lightgreen"));  
+
 }
 
 QString Hotspot2::getAccessNetworkType(QString query){
@@ -92,7 +96,7 @@ void Hotspot2::highlight(QString str){
   if (list.size() != 1)
     return;
   QTreeWidgetItem *item = list.first();
-  QBrush b (Qt::green);
+  QBrush b (*stageColorMap.value(filterStage));
   for (int i = 0; i < hs20APWidget->columnCount(); ++i)
     item->setBackground(i, b);
 
@@ -103,8 +107,11 @@ void Hotspot2::notify(WpaMsg msg){
   if (str.startsWith("ANQP fetch completed") || str.startsWith("Arbiter: ANQP Information Received"))
     fresh();
   
-  if (str.startsWith("Arbiter: After this filter, candidates left are:"))
-    fresh();
+  if (str.startsWith("All interworking networks available are"))
+    filterStage = 0;
+    
+  if (str.endsWith("Filter starts working..."))
+    filterStage++;
   
   if (str.startsWith("Arbiter: AP - "))
     highlight(str.mid(str.indexOf("Arbiter: AP - ") + 14));  
@@ -116,6 +123,7 @@ void Hotspot2::notify(WpaMsg msg){
     return;
 
   append(str.mid(str.indexOf("Arbiter: ") + 9));
+
 }
 
 Hotspot2::~Hotspot2()
