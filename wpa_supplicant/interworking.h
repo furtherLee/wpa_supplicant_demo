@@ -28,4 +28,21 @@ void interworking_stop_fetch_anqp(struct wpa_supplicant *wpa_s);
 int interworking_select(struct wpa_supplicant *wpa_s, int auto_select);
 int interworking_connect(struct wpa_supplicant *wpa_s, struct wpa_bss *bss);
 
+struct nai_realm_eap {
+	u8 method;
+	u8 inner_method;
+	enum nai_realm_eap_auth_inner_non_eap inner_non_eap;
+	u8 cred_type;
+	u8 tunneled_cred_type;
+};
+
+struct nai_realm {
+	u8 encoding;
+	char *realm;
+	u8 eap_count;
+	struct nai_realm_eap *eap;
+};
+
+struct nai_realm * nai_realm_parse(struct wpabuf *anqp, u16 *count);
+
 #endif /* INTERWORKING_H */

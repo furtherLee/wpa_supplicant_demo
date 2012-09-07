@@ -127,6 +127,8 @@ static void getChargable(char *chargable, struct wpa_bss *bss){
 static void getAuthMethod(char *authMethod, struct wpa_bss *bss){
   if (bss->anqp_nai_realm == NULL)
     os_memcpy(authMethod, "UNSET\0", 6);
+
+  
 }
 
 static void getRoamingConsortium(char *roamingConsortium, struct wpa_bss *bss){

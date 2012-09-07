@@ -147,7 +147,7 @@ static int interworking_anqp_send_req(struct wpa_supplicant *wpa_s,
 	return ret;
 }
 
-
+/*
 struct nai_realm_eap {
 	u8 method;
 	u8 inner_method;
@@ -162,7 +162,7 @@ struct nai_realm {
 	u8 eap_count;
 	struct nai_realm_eap *eap;
 };
-
+*/
 
 static void nai_realm_free(struct nai_realm *realms, u16 count)
 {
@@ -333,7 +333,7 @@ static const u8 * nai_realm_parse_realm(struct nai_realm *r, const u8 *pos,
 }
 
 
-static struct nai_realm * nai_realm_parse(struct wpabuf *anqp, u16 *count)
+struct nai_realm * nai_realm_parse(struct wpabuf *anqp, u16 *count)
 {
 	struct nai_realm *realm;
 	const u8 *pos, *end;
