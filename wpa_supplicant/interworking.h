@@ -45,5 +45,6 @@ struct nai_realm {
 
 struct nai_realm * nai_realm_parse(struct wpabuf *anqp, u16 *count);
 void nai_realm_free(struct nai_realm *realms, u16 count);
+int nai_realm_match(struct nai_realm *realm, const char *home_realm);
 
 #endif /* INTERWORKING_H */

@@ -372,7 +372,7 @@ struct nai_realm * nai_realm_parse(struct wpabuf *anqp, u16 *count)
 }
 
 
-static int nai_realm_match(struct nai_realm *realm, const char *home_realm)
+int nai_realm_match(struct nai_realm *realm, const char *home_realm)
 {
 	char *tmp, *pos, *end;
 	int match = 0;
