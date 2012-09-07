@@ -75,3 +75,39 @@ void display_candidates(struct wpa_supplicant *wpa_s, struct dl_list *list){
     arbiter_message(wpa_s, ret);
   }
 }
+
+int insert_string(char **pos, char **end, int num){
+  if (num < 0 || num >= *end-*pos)
+    return 0;
+  else{
+    *pos += num;
+    return 1;
+  }
+}
+
+static char* methodMap[] = {
+  "EAP-NONE", "EAP-IDENTITY", "EAP-NOTIFICATION", "EAP-NAK", "EAP-MD5",
+  "EAP-OTP", "EAP-GTC", NULL, NULL, NULL,
+  NULL, NULL, NULL, "EAP-TLS", NULL,
+  NULL, NULL, "EAP-LEAP", "EAP-SIM", NULL,
+  NULL, "EAP-TTLS", NULL, "EAP-AKA", NULL,
+  "EAP-PEAP", "EAP-MSCHAPV2", NULL, NULL, NULL,
+  NULL, NULL, NULL, "EAP-TLV", NULL,
+  NULL, NULL, NULL, "EAP-TNC", NULL,
+  NULL, NULL, NULL, "EAP-FAST" , NULL,
+  NULL, "EAP-PAX", "EAP-PSK", "EAP-SAKE", "EAP-IKEV2",
+  "EAP-AKA-PRIME", "EAP-GPSK", "EAP-PWD", NULL, NULL
+};
+
+int abiter_append_eap_method(char **pos, char **end, u8 method){
+  int ret;
+
+  if (method == 254)
+    ret = os_snprintf(*pos, *end, "[EPA-EXPANDED]");
+  else if (method > 52)
+    ret = os_snprintf(*pos, *end, "[UNDEFINED-EAP-METHOD]");
+  else
+    ret = os_snprintf(*pos, *end, "[%s]", methodMap[method]);
+
+  return insert_string(pos, end, ret);
+}

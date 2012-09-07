@@ -7,6 +7,7 @@
 #include "../interworking.h"
 #include "arbiter.h"
 #include "util.h"
+#include "../config.h"
 
 static void event_init(struct wpa_supplicant *wpa_s){
   // TODO
@@ -124,11 +125,43 @@ static void getChargable(char *chargable, struct wpa_bss *bss){
   os_snprintf(chargable, 32, "%d", type);
 }
 
-static void getAuthMethod(char *authMethod, struct wpa_bss *bss){
-  if (bss->anqp_nai_realm == NULL)
+static void getAuthMethod(struct wpa_supplicant *wpa_s, char *authMethod, struct wpa_bss *bss){
+  if (bss->anqp_nai_realm == NULL){
     os_memcpy(authMethod, "UNSET\0", 6);
+    return;
+  }
+  u16 count, i;
+  char *pos = authMethod;
+  char *end = pos + 256;
+  struct nai_realm *realms = nai_realm_parse(bss->anqp_nai_realm, &count);
+  int ret;
+  int j;
+  int flag = 1;
 
-  
+  for (i = 0; i < count; ++i)
+    if(nai_realm_match(&realms[i], wpa_s->conf->home_realm)){
+
+      ret = os_snprintf(pos, end-pos, "%s: ", realms[i].realm);
+      if(!insert_string(&pos, &end, ret))
+	break;
+      for (j = 0; j < realms[i].eap_count; ++j)
+	if(!abiter_append_eap_method(&pos, &end, realms[i].eap[j].method)){
+	  flag = 0;
+	  break;
+	}
+
+      if (!flag)
+	break;
+    }
+
+  if (pos == authMethod){
+    ret = os_snprintf(authMethod, end-pos, "No Matched Realm");
+    insert_string(&pos, &end, ret); 
+  }
+
+  *pos = '\0';
+
+  nai_realm_free(realms, count);
 }
 
 static void getRoamingConsortium(char *roamingConsortium, struct wpa_bss *bss){
@@ -141,20 +174,20 @@ static void getRoamingConsortium(char *roamingConsortium, struct wpa_bss *bss){
 
   const u8 *pos = wpabuf_head_u8(list);
   const u8 *end = pos + wpabuf_len(list);
-  char fuck[256];
-  wpa_snprintf_hex(fuck, 256, pos, 30);
+  //  char fuck[256];
+  //  wpa_snprintf_hex(fuck, 256, pos, 30);
   char *mark = roamingConsortium;
+  char *mark_end = mark + 256;
   for(;pos != end; pos = pos + *pos + 1){
-    wpa_snprintf_hex(mark, 256, pos + 1, *pos);
+    wpa_snprintf_hex(mark, mark_end - mark, pos + 1, *pos);
     mark += 2 * (*pos);
     if (pos + *pos + 1 != end){
       *mark = ',';
       mark++;
     }
   }
-  *mark = '\0'; 
+  *mark = '\0';
 }
-
 
 int arbiter_get_anqp_info(struct wpa_supplicant *wpa_s, char *cmd, char *reply, size_t reply_size){
     size_t i;
@@ -181,9 +214,9 @@ int arbiter_get_anqp_info(struct wpa_supplicant *wpa_s, char *cmd, char *reply, 
   getHS20(hs20, bss);
   getInternet(internet, bss);
   getChargable(chargable, bss);
-  getAuthMethod(authMethod, bss);
+  getAuthMethod(wpa_s, authMethod, bss);
   getRoamingConsortium(roamingConsortium, bss);
-  
+
   pos = reply;
   end = reply + reply_size;
   ret = os_snprintf(pos, end - pos,

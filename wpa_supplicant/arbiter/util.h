@@ -20,4 +20,8 @@ int ie_interworking_internet(struct wpa_bss *bss);
 
 void display_candidates(struct wpa_supplicant *wpa_s, struct dl_list *list);
 
+int insert_string(char **pos, char **end, int num);
+
+int abiter_append_eap_method(char **pos, char **end, u8 method);
+
 #endif
