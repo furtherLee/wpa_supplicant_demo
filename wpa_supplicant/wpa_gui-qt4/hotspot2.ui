@@ -9,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1031</width>
+    <width>1320</width>
     <height>994</height>
    </rect>
   </property>
@@ -50,7 +50,7 @@
     <rect>
      <x>0</x>
      <y>950</y>
-     <width>1021</width>
+     <width>1311</width>
      <height>41</height>
     </rect>
    </property>
@@ -116,7 +116,7 @@
     <rect>
      <x>0</x>
      <y>440</y>
-     <width>1021</width>
+     <width>1311</width>
      <height>501</height>
     </rect>
    </property>
@@ -129,8 +129,23 @@
    <property name="sortingEnabled">
     <bool>true</bool>
    </property>
+   <property name="headerHidden">
+    <bool>false</bool>
+   </property>
+   <attribute name="headerCascadingSectionResizes">
+    <bool>true</bool>
+   </attribute>
+   <attribute name="headerMinimumSectionSize">
+    <number>40</number>
+   </attribute>
    <attribute name="headerShowSortIndicator" stdset="0">
     <bool>true</bool>
+   </attribute>
+   <attribute name="headerCascadingSectionResizes">
+    <bool>true</bool>
+   </attribute>
+   <attribute name="headerMinimumSectionSize">
+    <number>40</number>
    </attribute>
    <attribute name="headerShowSortIndicator" stdset="0">
     <bool>true</bool>
@@ -144,35 +159,56 @@
       <pointsize>12</pointsize>
      </font>
     </property>
+    <property name="textAlignment">
+     <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+    </property>
    </column>
    <column>
     <property name="text">
      <string>BSSID</string>
     </property>
+    <property name="textAlignment">
+     <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+    </property>
    </column>
    <column>
     <property name="text">
-     <string>Hotspot2.0 Support</string>
+     <string>HS20</string>
+    </property>
+    <property name="textAlignment">
+     <set>AlignHCenter|AlignVCenter|AlignCenter</set>
     </property>
    </column>
    <column>
     <property name="text">
      <string>Internet</string>
     </property>
+    <property name="textAlignment">
+     <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+    </property>
    </column>
    <column>
     <property name="text">
-     <string>Network Access Type</string>
+     <string>Access Network Type</string>
+    </property>
+    <property name="textAlignment">
+     <set>AlignHCenter|AlignVCenter|AlignCenter</set>
     </property>
    </column>
    <column>
     <property name="text">
      <string>Authentication Method</string>
     </property>
+    <property name="textAlignment">
+     <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+    </property>
    </column>
    <column>
     <property name="text">
      <string>Roaming Consortium</string>
+    </property>
+    <property name="textAlignment">
+     <set>AlignHCenter|AlignVCenter|AlignCenter</set>
     </property>
    </column>
    <column>
@@ -206,7 +242,7 @@
     <rect>
      <x>0</x>
      <y>40</y>
-     <width>1021</width>
+     <width>1311</width>
      <height>371</height>
     </rect>
    </property>

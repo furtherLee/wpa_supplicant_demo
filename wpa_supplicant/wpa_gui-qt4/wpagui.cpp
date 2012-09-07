@@ -259,19 +259,30 @@ void WpaGui::openHotspot2()
   hs20->exec();
 }
 
+static FILE *fout = NULL;
+
 void WpaGui::interworkingAutoSelect(){
-  char buf[64];
-  size_t buf_len;
-  printf("select!\n");
+  char buf[128];
+  size_t buf_len = 128;
+  int ret = 0;
+
+  if (fout == NULL)
+    fout = fopen("/tmp/gui.log", "w");
+
   if(switchInterworkingSelectAction->isChecked()){
-    ctrlRequest("SET_AUTO_INTERWORKING_SELECT TRUE", buf, &buf_len);
+    fprintf(fout, "checked\n");
+    ret = ctrlRequest("SET_AUTO_INTERWORKING_SELECT TRUE", buf, &buf_len);
   }
   else{
-    ctrlRequest("SET_AUTO_INTERWORKING_SELECT FALSE", buf, &buf_len);
+    ret = ctrlRequest("SET_AUTO_INTERWORKING_SELECT FALSE", buf, &buf_len);
+    fprintf(fout, "unchecked\n");
   }
 
-  if (buf_len <= 0)
+  fflush(fout);
+  
+  if (ret <= 0)
     switchInterworkingSelectAction->toggle();
+  
 }
 
 void WpaGui::languageChange()

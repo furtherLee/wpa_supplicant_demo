@@ -69,6 +69,8 @@ struct wpa_bss *arbiter_select(struct dl_list *list, struct wpa_supplicant *wpa_
 
 void arbiter_disconnect_occur(struct wpa_supplicant *wpa_s){
 
+  wpa_printf(MSG_INFO, "set_auto: %d", wpa_s->arbiter->set_auto);
+
   if(!wpa_s->arbiter->set_auto)
     return;
 
@@ -83,12 +85,12 @@ int arbiter_set_auto(struct wpa_supplicant *wpa_s, char *buf, char* reply){
 
   if (os_strncmp(buf, "TRUE", 4) == 0){
     wpa_s->arbiter->set_auto = 1;
-    os_strlcpy(reply, "Arbiter: AUTO_SET\n", 18);
+    os_memcpy(reply, "Arbiter: AUTO_SET\n", 18);
     return 18;
   }
   else if (os_strncmp(buf, "FALSE", 5) == 0){
-    wpa_s->arbiter->set_auto = 1;
-    os_strlcpy(reply, "Arbiter: AUTO_RESET\n", 20);
+    wpa_s->arbiter->set_auto = 0;
+    os_memcpy(reply, "Arbiter: AUTO_RESET\n", 20);
     return 20;    
   }
   else
@@ -118,7 +120,7 @@ static void getChargable(char *chargable, struct wpa_bss *bss){
   }
 
   const u8* ie = pos + 2;
-  int type = ie[0] & 0x01;
+  int type = ie[0] & 0x0f;
   os_snprintf(chargable, 32, "%d", type);
 }
 

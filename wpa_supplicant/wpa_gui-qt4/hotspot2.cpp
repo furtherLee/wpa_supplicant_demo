@@ -21,6 +21,23 @@ void Hotspot2::addMap(){
   OUIMap.insert("001bc504bd", new QString("Silicon Controls"));
   OUIMap.insert("506f9a", new QString("Wi-Fi Alliance"));
   OUIMap.insert("0050f2", new QString("Microsoft"));
+
+  accessTypeMap.insert("UNSET", new QString("UNSET"));
+  accessTypeMap.insert("0", new QString("Private Network"));
+  accessTypeMap.insert("1", new QString("Private Network with Guest Access"));
+  accessTypeMap.insert("2", new QString("Chargable Public Network"));
+  accessTypeMap.insert("3", new QString("Free Public Network"));
+  accessTypeMap.insert("4", new QString("Personal Device Network"));
+  accessTypeMap.insert("5", new QString("Emergency Service Only Network"));
+  accessTypeMap.insert("14", new QString("Test or Experimental"));
+  accessTypeMap.insert("15", new QString("Wildcardx"));
+
+}
+
+QString Hotspot2::getAccessNetworkType(QString query){
+  if (!accessTypeMap.contains(query))
+    return query;
+  return *accessTypeMap.value(query);
 }
 
 QString Hotspot2::getConsortium(QString query){
@@ -70,11 +87,27 @@ void Hotspot2::append(QString str){
 
 }
 
+void Hotspot2::highlight(QString str){
+  QList<QTreeWidgetItem *> list = hs20APWidget->findItems(str, Qt::MatchExactly, 0);
+  if (list.size() != 1)
+    return;
+  QTreeWidgetItem *item = list.first();
+  QBrush b (Qt::green);
+  for (int i = 0; i < hs20APWidget->columnCount(); ++i)
+    item->setBackground(i, b);
+
+}
+
 void Hotspot2::notify(WpaMsg msg){
   QString str = msg.getMsg();
   if (str.startsWith("ANQP fetch completed") || str.startsWith("Arbiter: ANQP Information Received"))
     fresh();
   
+  if (str.startsWith("Arbiter: After this filter, candidates left are:"))
+    fresh();
+  
+  if (str.startsWith("Arbiter: AP - "))
+    highlight(str.mid(str.indexOf("Arbiter: AP - ") + 14));  
   /*
    * Deal with Arbiter Message
    */
@@ -82,7 +115,7 @@ void Hotspot2::notify(WpaMsg msg){
   if(!str.startsWith("Arbiter: "))
     return;
 
-  append(str);
+  append(str.mid(str.indexOf("Arbiter: ") + 9));
 }
 
 Hotspot2::~Hotspot2()
@@ -119,7 +152,7 @@ void Hotspot2::fresh(){
 			break;
 		reply[reply_len] = '\0';
 
-		printf("%s\n", reply);
+		//		printf("%s\n", reply);
 
 		QString bss(reply);
 		if (bss.isEmpty() || bss.startsWith("FAIL"))
@@ -151,15 +184,17 @@ void Hotspot2::fresh(){
 			  authMethod = (*it).mid(pos);
 			if ((*it).startsWith("roamingConsortium="))
 			  consortiumList = (*it).mid(pos);
-
-			QStringList consortiums = consortiumList.split(QRegExp(","));
-			for (QStringList::Iterator con = consortiums.begin();
-			     con != consortiums.end(); con++){
-			  if ((*con).isEmpty())
-			    continue;
-			  roamingConsortium.append("[" + getConsortium(*con) + "]");
-			}
 		}
+
+		QStringList consortiums = consortiumList.split(QRegExp(","));
+		for (QStringList::Iterator con = consortiums.begin();
+		     con != consortiums.end(); con++){
+		  if ((*con).isEmpty())
+		    continue;
+		  roamingConsortium.append("[" + getConsortium(*con) + "]");
+		}
+
+		chargable = getAccessNetworkType(chargable);
 
 		QTreeWidgetItem *item = new QTreeWidgetItem(hs20APWidget);
 		if (item) {
@@ -170,8 +205,12 @@ void Hotspot2::fresh(){
 			item->setText(4, chargable);
 			item->setText(5, authMethod);
 			item->setText(6, roamingConsortium);
+			for(int i = 0; i < hs20APWidget->columnCount(); ++i)
+			  item->setTextAlignment(i, Qt::AlignHCenter);
 		}
 		if (bssid.isEmpty())
 			break;
 	}
+	for (int i = 0; i < hs20APWidget->columnCount(); ++i)
+	  hs20APWidget->resizeColumnToContents(i);
 }

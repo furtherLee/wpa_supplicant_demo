@@ -31,12 +31,15 @@ private:
   void append(QString str);
   void addMap();
   QString getConsortium(QString query);
+  QString getAccessNetworkType(QString query);
+  void highlight(QString str);
 public:
   virtual void notify(WpaMsg msg);
 
 private:
   WpaGui *wpagui;
   QMap<QString, QString*> OUIMap;
+  QMap<QString, QString*> accessTypeMap;
 };
 
 #endif
