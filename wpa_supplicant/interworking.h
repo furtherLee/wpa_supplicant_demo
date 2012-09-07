@@ -44,5 +44,6 @@ struct nai_realm {
 };
 
 struct nai_realm * nai_realm_parse(struct wpabuf *anqp, u16 *count);
+void nai_realm_free(struct nai_realm *realms, u16 count);
 
 #endif /* INTERWORKING_H */

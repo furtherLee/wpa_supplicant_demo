@@ -164,7 +164,7 @@ struct nai_realm {
 };
 */
 
-static void nai_realm_free(struct nai_realm *realms, u16 count)
+void nai_realm_free(struct nai_realm *realms, u16 count)
 {
 	u16 i;
 
