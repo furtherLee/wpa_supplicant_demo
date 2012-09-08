@@ -32,9 +32,9 @@ void Hotspot2::addMap(){
   accessTypeMap.insert("14", new QString("Test or Experimental"));
   accessTypeMap.insert("15", new QString("Wildcardx"));
 
-  stageColorMap.insert(0, new QColor("gainsboro"));
-  stageColorMap.insert(1, new QColor("orange"));
-  stageColorMap.insert(2, new QColor("lightgreen"));  
+  stageColorMap.insert(0, new QString("gainsboro"));
+  stageColorMap.insert(1, new QString("orange"));
+  stageColorMap.insert(2, new QString("lightgreen"));  
 
 }
 
@@ -96,7 +96,7 @@ void Hotspot2::highlight(QString str){
   if (list.size() != 1)
     return;
   QTreeWidgetItem *item = list.first();
-  QBrush b (*stageColorMap.value(filterStage));
+  QBrush b (QColor(*stageColorMap.value(filterStage)));
   for (int i = 0; i < hs20APWidget->columnCount(); ++i)
     item->setBackground(i, b);
 
@@ -107,11 +107,15 @@ void Hotspot2::notify(WpaMsg msg){
   if (str.startsWith("ANQP fetch completed") || str.startsWith("Arbiter: ANQP Information Received"))
     fresh();
   
-  if (str.startsWith("All interworking networks available are"))
+  if (str.startsWith("All interworking networks available are")){
+    append("Corresponding Color is: " + *stageColorMap.value(filterStage)+ "\n");
     filterStage = 0;
+  }
     
-  if (str.endsWith("Filter starts working..."))
+  if (str.endsWith("Filter starts working...")){
+    append("Corresponding Color is: " + *stageColorMap.value(filterStage) + "\n");
     filterStage++;
+  }
   
   if (str.startsWith("Arbiter: AP - "))
     highlight(str.mid(str.indexOf("Arbiter: AP - ") + 14));  

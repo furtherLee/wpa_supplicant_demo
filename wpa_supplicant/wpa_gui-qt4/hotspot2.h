@@ -41,7 +41,7 @@ private:
   QMap<QString, QString*> OUIMap;
   QMap<QString, QString*> accessTypeMap;
   int filterStage;
-  QMap<int, QColor*> stageColorMap;
+  QMap<int, QString*> stageColorMap;
 };
 
 #endif
