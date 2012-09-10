@@ -16,6 +16,12 @@
   <layout class="QVBoxLayout">
    <item>
     <widget class="QTreeWidget" name="scanResultsWidget">
+     <property name="font">
+      <font>
+       <family>Bitstream Charter</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
      <property name="editTriggers">
       <set>QAbstractItemView::NoEditTriggers</set>
      </property>
@@ -72,6 +78,12 @@
      </item>
      <item>
       <widget class="QPushButton" name="scanButton">
+       <property name="font">
+        <font>
+         <family>Bitstream Charter</family>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
        <property name="text">
         <string>Scan</string>
        </property>
@@ -79,6 +91,12 @@
      </item>
      <item>
       <widget class="QPushButton" name="closeButton">
+       <property name="font">
+        <font>
+         <family>Bitstream Charter</family>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
        <property name="text">
         <string>Close</string>
        </property>
