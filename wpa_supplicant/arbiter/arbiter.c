@@ -140,10 +140,6 @@ static void getAuthMethod(struct wpa_supplicant *wpa_s, char *authMethod, struct
 
   for (i = 0; i < count; ++i)
     if(nai_realm_match(&realms[i], wpa_s->conf->home_realm)){
-
-      ret = os_snprintf(pos, end-pos, "%s: ", realms[i].realm);
-      if(!insert_string(&pos, &end, ret))
-	break;
       for (j = 0; j < realms[i].eap_count; ++j)
 	if(!abiter_append_eap_method(&pos, &end, realms[i].eap[j].method)){
 	  flag = 0;

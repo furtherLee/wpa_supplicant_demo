@@ -73,6 +73,8 @@ void Hotspot2::interworkingSelect(){
   char reply[64];
   size_t reply_len;
   filterStage = 0;
+  wpagui->disconnect();
+  wpagui->showTrayMessage(QSystemTrayIcon::Information, 5, "Start Interworking Select");
   wpagui->ctrlRequest("INTERWORKING_SELECT auto", reply, &reply_len);
 }
 
