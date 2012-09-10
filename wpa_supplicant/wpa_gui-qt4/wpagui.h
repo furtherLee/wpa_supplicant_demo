@@ -148,6 +148,7 @@ private:
 
  private:
 	Hotspot2 *hs20;
+	QAction *hs20Action;
  public slots:
 	virtual void openHotspot2();
 	virtual void interworkingAutoSelect();
