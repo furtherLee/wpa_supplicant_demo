@@ -507,6 +507,7 @@
   <include location="local">scanresults.h</include>
   <include location="local">peers.h</include>
   <include location="local">hotspot2.h</include>
+  <include location="local">hotspot2config.h</include>
  </includes>
  <resources>
   <include location="icons.qrc"/>

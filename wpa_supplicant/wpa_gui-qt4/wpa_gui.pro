@@ -40,7 +40,8 @@ HEADERS	+= wpamsg.h \
 	addinterface.h \
 	peers.h \
 	stringquery.h \
-        hotspot2.h
+        hotspot2.h \
+	hotspot2config.h
 
 SOURCES	+= main.cpp \
 	wpagui.cpp \
@@ -53,6 +54,7 @@ SOURCES	+= main.cpp \
 	peers.cpp \
 	stringquery.cpp \
 	hotspot2.cpp \
+	hotspot2config.cpp \
 	../../src/common/wpa_ctrl.c
 
 RESOURCES += icons.qrc
@@ -61,6 +63,7 @@ FORMS	= wpagui.ui \
 	eventhistory.ui \
 	scanresults.ui \
 	hotspot2.ui \
+	hotspot2config.ui \
 	userdatarequest.ui \
 	networkconfig.ui \
 	peers.ui

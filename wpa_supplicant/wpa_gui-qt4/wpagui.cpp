@@ -148,6 +148,7 @@ WpaGui::WpaGui(QApplication *_app, QWidget *parent, const char *, Qt::WFlags)
 	monitor_conn = NULL;
 	msgNotifier = NULL;
 	hs20 = NULL;
+	hs20Config = NULL;
 	ctrl_iface_dir = strdup("/var/run/wpa_supplicant");
 
 	parse_argv();
@@ -236,6 +237,11 @@ WpaGui::~WpaGui()
 	  hs20 = NULL;
 	}
 
+	if (hs20Config){
+	  hs20Config->close();
+	  delete hs20Config;
+	  hs20Config = NULL;
+	}
 
 	free(ctrl_iface);
 	ctrl_iface = NULL;
@@ -1388,7 +1394,7 @@ void WpaGui::createTrayIcon(bool trayOnly)
 
 	/** add for hotspot 2 **/
 	hs20Action = new QAction(tr("Hotspot 2.0 &Run"), this);
-	hs20ConfigAction = new QActioni(tr("Hotspot 2.0 &Config"), this);
+	hs20ConfigAction = new QAction(tr("Hotspot 2.0 &Config"), this);
 	connect(hs20Action, SIGNAL(triggered()), this,
 		SLOT(openHotspot2()));
 	connect(hs20ConfigAction, SIGNAL(triggered()), this,
@@ -1408,6 +1414,20 @@ void WpaGui::createTrayIcon(bool trayOnly)
 	if (!trayOnly)
 		show();
 	inTray = trayOnly;
+}
+
+void WpaGui::openHotspot2Config(){
+  if (hs20Config) {
+    hs20Config->close();
+    delete hs20Config;
+  }
+
+  hs20Config = new Hotspot2Config();
+  if (hs20Config == NULL)
+    return;
+  hs20Config->setWpaGui(this);
+  hs20Config->show();
+  hs20Config->exec();
 }
 
 

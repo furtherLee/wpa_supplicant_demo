@@ -148,10 +148,13 @@ private:
 
  private:
 	Hotspot2 *hs20;
+	Hotspot2Config *hs20Config;
 	QAction *hs20Action;
+	QAction *hs20ConfigAction;
  public slots:
 	virtual void openHotspot2();
 	virtual void interworkingAutoSelect();
+	virtual void openHotspot2Config();
 };
 
 #endif /* WPAGUI_H */
