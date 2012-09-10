@@ -1,67 +1,68 @@
-<ui version="4.0" >
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>ScanResults</class>
- <widget class="QDialog" name="ScanResults" >
-  <property name="geometry" >
+ <widget class="QDialog" name="ScanResults">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>452</width>
-    <height>244</height>
+    <width>794</width>
+    <height>410</height>
    </rect>
   </property>
-  <property name="windowTitle" >
+  <property name="windowTitle">
    <string>Scan results</string>
   </property>
-  <layout class="QVBoxLayout" >
+  <layout class="QVBoxLayout">
    <item>
-    <widget class="QTreeWidget" name="scanResultsWidget" >
-     <property name="editTriggers" >
+    <widget class="QTreeWidget" name="scanResultsWidget">
+     <property name="editTriggers">
       <set>QAbstractItemView::NoEditTriggers</set>
      </property>
-     <property name="uniformRowHeights" >
+     <property name="uniformRowHeights">
       <bool>true</bool>
      </property>
-     <property name="sortingEnabled" >
+     <property name="sortingEnabled">
       <bool>true</bool>
      </property>
-     <property name="columnCount" >
+     <property name="columnCount">
       <number>5</number>
      </property>
      <column>
-      <property name="text" >
+      <property name="text">
        <string>SSID</string>
       </property>
      </column>
      <column>
-      <property name="text" >
+      <property name="text">
        <string>BSSID</string>
       </property>
      </column>
      <column>
-      <property name="text" >
+      <property name="text">
        <string>frequency</string>
       </property>
      </column>
      <column>
-      <property name="text" >
+      <property name="text">
        <string>signal</string>
       </property>
      </column>
      <column>
-      <property name="text" >
+      <property name="text">
        <string>flags</string>
       </property>
      </column>
     </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout" >
+    <layout class="QHBoxLayout">
      <item>
       <spacer>
-       <property name="orientation" >
+       <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
-       <property name="sizeHint" >
+       <property name="sizeHint" stdset="0">
         <size>
          <width>40</width>
          <height>20</height>
@@ -70,15 +71,15 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="scanButton" >
-       <property name="text" >
+      <widget class="QPushButton" name="scanButton">
+       <property name="text">
         <string>Scan</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="closeButton" >
-       <property name="text" >
+      <widget class="QPushButton" name="closeButton">
+       <property name="text">
         <string>Close</string>
        </property>
       </widget>
@@ -87,8 +88,7 @@
    </item>
   </layout>
  </widget>
- <layoutdefault spacing="6" margin="11" />
- <pixmapfunction></pixmapfunction>
+ <layoutdefault spacing="6" margin="11"/>
  <resources/>
  <connections/>
 </ui>

@@ -10,10 +10,10 @@
 #include <QScrollBar>
 
 void Hotspot2::binding(){
-  connect(closeButton, SIGNAL(clicked()), this, SLOT(close()));
+  //  connect(closeButton, SIGNAL(clicked()), this, SLOT(close()));
   connect(autoSelectButton, SIGNAL(clicked()), this, SLOT(interworkingSelect()));
-  connect(freshButton, SIGNAL(clicked()), this, SLOT(fresh()));
-  connect(fetchANQPButton, SIGNAL(clicked()), this, SLOT(fetch()));
+  //  connect(freshButton, SIGNAL(clicked()), this, SLOT(fresh()));
+  //  connect(fetchANQPButton, SIGNAL(clicked()), this, SLOT(fetch()));
 }
 
 void Hotspot2::addMap(){
@@ -32,9 +32,9 @@ void Hotspot2::addMap(){
   accessTypeMap.insert("14", new QString("Test or Experimental"));
   accessTypeMap.insert("15", new QString("Wildcardx"));
 
-  stageColorMap.insert(0, new QColor("gainsboro"));
-  stageColorMap.insert(1, new QColor("orange"));
-  stageColorMap.insert(2, new QColor("lightgreen"));  
+  stageColorMap.insert(0, new QString("gainsboro"));
+  stageColorMap.insert(1, new QString("orange"));
+  stageColorMap.insert(2, new QString("lightgreen"));  
 
 }
 
@@ -99,7 +99,8 @@ void Hotspot2::highlight(QString str){
   if (list.size() != 1)
     return;
   QTreeWidgetItem *item = list.first();
-  QBrush b (*stageColorMap.value(filterStage));
+  QColor color(*stageColorMap.value(filterStage));
+  QBrush b (color);
   for (int i = 0; i < hs20APWidget->columnCount(); ++i)
     item->setBackground(i, b);
 
@@ -109,12 +110,17 @@ void Hotspot2::notify(WpaMsg msg){
   QString str = msg.getMsg();
   if (str.startsWith("ANQP fetch completed") || str.startsWith("Arbiter: ANQP Information Received"))
     fresh();
-  
-  if (str.startsWith("All interworking networks available are"))
+  bool stageChange = false;
+
+  if (str.startsWith("Arbiter: All interworking networks available are")){
     filterStage = 0;
+    stageChange = true;
+  }
     
-  if (str.endsWith("Filter starts working..."))
+  if (str.endsWith("Filter starts working...")){
+    stageChange =true;
     filterStage++;
+  }
   
   if (str.startsWith("Arbiter: AP - "))
     highlight(str.mid(str.indexOf("Arbiter: AP - ") + 14));  
@@ -124,8 +130,10 @@ void Hotspot2::notify(WpaMsg msg){
 
   if(!str.startsWith("Arbiter: "))
     return;
-
-  append(str.mid(str.indexOf("Arbiter: ") + 9));
+  QString output = str.mid(str.indexOf("Arbiter: ") + 9);
+  if (stageChange)
+    output = "<font color=\"" + *stageColorMap.value(filterStage) + "\">" +  output + "</font>";
+  append(output);
 
 }
 
