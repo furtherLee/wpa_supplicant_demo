@@ -72,6 +72,7 @@ Hotspot2::Hotspot2(QWidget *parent, const char *, bool, Qt::WFlags)
 void Hotspot2::interworkingSelect(){
   char reply[64];
   size_t reply_len;
+  filterStage = 0;
   wpagui->ctrlRequest("INTERWORKING_SELECT auto", reply, &reply_len);
 }
 

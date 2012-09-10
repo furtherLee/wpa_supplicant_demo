@@ -1400,8 +1400,9 @@ void WpaGui::showTrayMessage(QSystemTrayIcon::MessageIcon type, int sec,
 	if (!QSystemTrayIcon::supportsMessages())
 		return;
 
-	if (isVisible() || !tray_icon || !tray_icon->isVisible())
-		return;
+	//	if (isVisible() || !tray_icon || !tray_icon->isVisible())
+	if (!tray_icon || !tray_icon->isVisible())
+	  return;
 
 	tray_icon->showMessage(qAppName(), msg, type, sec * 1000);
 }
