@@ -552,7 +552,7 @@ void WpaGui::updateStatus()
 		textEncryption->clear();
 		textSsid->clear();
 		textBssid->clear();
-		textIpAddress->clear();
+		//		textIpAddress->clear();
 
 #ifdef CONFIG_NATIVE_WINDOWS
 		static bool first = true;
@@ -602,7 +602,7 @@ void WpaGui::updateStatus()
 				textSsid->setText(pos);
 			} else if (strcmp(start, "ip_address") == 0) {
 				ipaddr_updated = true;
-				textIpAddress->setText(pos);
+				//				textIpAddress->setText(pos);
 			} else if (strcmp(start, "wpa_state") == 0) {
 				status_updated = true;
 				textStatus->setText(wpaStateTranslate(pos));
@@ -651,8 +651,8 @@ void WpaGui::updateStatus()
 		textSsid->clear();
 	if (!bssid_updated)
 		textBssid->clear();
-	if (!ipaddr_updated)
-		textIpAddress->clear();
+	//	if (!ipaddr_updated)
+	  //		textIpAddress->clear();
 }
 
 
