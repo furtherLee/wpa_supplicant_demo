@@ -224,4 +224,5 @@ void Hotspot2::fresh(){
 	}
 	for (int i = 0; i < hs20APWidget->columnCount(); ++i)
 	  hs20APWidget->resizeColumnToContents(i);
+	hs20APWidget->sortByColumn(2, Qt::DescendingOrder);
 }
