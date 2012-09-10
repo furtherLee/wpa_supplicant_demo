@@ -1387,11 +1387,16 @@ void WpaGui::createTrayIcon(bool trayOnly)
 	tray_menu->addSeparator();
 
 	/** add for hotspot 2 **/
-	hs20Action = new QAction(tr("&Hotspot 2.0"), this);
+	hs20Action = new QAction(tr("Hotspot 2.0 &Run"), this);
+	hs20ConfigAction = new QActioni(tr("Hotspot 2.0 &Config"), this);
 	connect(hs20Action, SIGNAL(triggered()), this,
 		SLOT(openHotspot2()));
+	connect(hs20ConfigAction, SIGNAL(triggered()), this,
+		SLOT(openHotspot2Config()));
 	
+
 	tray_menu->addAction(hs20Action);
+	tray_menu->addAction(hs20ConfigAction);
 	tray_menu->addSeparator();
 	tray_menu->addAction(quitAction);
 
@@ -1416,7 +1421,7 @@ void WpaGui::showTrayMessage(QSystemTrayIcon::MessageIcon type, int sec,
 	if (!tray_icon || !tray_icon->isVisible())
 	  return;
 
-	tray_icon->showMessage(qAppName(), msg, type, sec * 1000);
+	tray_icon->showMessage("Wireless Info", msg, type, sec * 1000);
 }
 
 

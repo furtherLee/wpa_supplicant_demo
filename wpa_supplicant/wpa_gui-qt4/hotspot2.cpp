@@ -77,6 +77,8 @@ void Hotspot2::interworkingSelect(){
   wpagui->disconnect();
   wpagui->showTrayMessage(QSystemTrayIcon::Information, 5, "Start Interworking Select");
   wpagui->ctrlRequest("INTERWORKING_SELECT auto", reply, &reply_len);
+  arbiterInfoText->clear();
+  fresh();
 }
 
 void Hotspot2::append(QString str){
@@ -219,12 +221,12 @@ void Hotspot2::fresh(){
 		QTreeWidgetItem *item = new QTreeWidgetItem(hs20APWidget);
 		if (item) {
 			item->setText(0, ssid);
-			item->setText(1, bssid);
-			item->setText(2, hs20);
-			item->setText(3, internet);
-			item->setText(4, chargable);
-			item->setText(5, authMethod);
-			item->setText(6, roamingConsortium);
+			//			item->setText(1, bssid);
+			item->setText(1, hs20);
+			item->setText(2, internet);
+			item->setText(3, chargable);
+			item->setText(4, authMethod);
+			item->setText(5, roamingConsortium);
 			for(int i = 0; i < hs20APWidget->columnCount(); ++i)
 			  item->setTextAlignment(i, Qt::AlignHCenter);
 		}
@@ -233,5 +235,5 @@ void Hotspot2::fresh(){
 	}
 	for (int i = 0; i < hs20APWidget->columnCount(); ++i)
 	  hs20APWidget->resizeColumnToContents(i);
-	hs20APWidget->sortByColumn(2, Qt::DescendingOrder);
+	hs20APWidget->sortByColumn(1, Qt::DescendingOrder);
 }

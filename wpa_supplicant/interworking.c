@@ -912,8 +912,8 @@ static void interworking_next_anqp_fetch(struct wpa_supplicant *wpa_s)
 		if (ie == NULL || ie[1] < 4 || !(ie[5] & 0x80))
 		  continue; /* AP does not support Interworking */
 
-		if (bss->fetched)
-		  continue; /* has fetched all ANQP infomation */
+		//		if (bss->fetched)
+		//		  continue; /* has fetched all ANQP infomation */
 		if (!(bss->flags & WPA_BSS_ANQP_FETCH_TRIED)) {
 			found++;
 			bss->flags |= WPA_BSS_ANQP_FETCH_TRIED;

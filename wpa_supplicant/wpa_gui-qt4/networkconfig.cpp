@@ -122,7 +122,7 @@ void NetworkConfig::authChanged(int sel)
 	identityEdit->setEnabled(eap);
 	passwordEdit->setEnabled(eap);
 	cacertEdit->setEnabled(eap);
-	phase2Select->setEnabled(eap);
+	//	phase2Select->setEnabled(eap);
 	if (eap)
 		eapChanged(eapSelect->currentIndex());
 
@@ -147,18 +147,20 @@ void NetworkConfig::authChanged(int sel)
 
 void NetworkConfig::eapChanged(int sel)
 {
+  /*
 	QString prev_val = phase2Select->currentText();
 	while (phase2Select->count())
 		phase2Select->removeItem(0);
-
+  */
 	QStringList inner;
 	inner << "PEAP" << "TTLS" << "FAST";
 	if (!inner.contains(eapSelect->itemText(sel)))
 		return;
 
-	phase2Select->addItem("[ any ]");
+	//	phase2Select->addItem("[ any ]");
 
 	/* Add special cases based on outer method */
+	/*
 	if (eapSelect->currentText().compare("TTLS") == 0) {
 		phase2Select->addItem("PAP");
 		phase2Select->addItem("CHAP");
@@ -166,24 +168,26 @@ void NetworkConfig::eapChanged(int sel)
 		phase2Select->addItem("MSCHAPv2");
 	} else if (eapSelect->currentText().compare("FAST") == 0)
 		phase2Select->addItem("GTC(auth) + MSCHAPv2(prov)");
-
+	*/
 	/* Add all enabled EAP methods that can be used in the tunnel */
-	int i;
+	// 	int i;
 	QStringList allowed;
 	allowed << "MSCHAPV2" << "MD5" << "GTC" << "TLS" << "OTP" << "SIM"
 		<< "AKA";
+	/*
 	for (i = 0; i < eapSelect->count(); i++) {
 		if (allowed.contains(eapSelect->itemText(i))) {
 			phase2Select->addItem("EAP-" + eapSelect->itemText(i));
 		}
 	}
-
+	
 	for (i = 0; i < phase2Select->count(); i++) {
 		if (phase2Select->itemText(i).compare(prev_val) == 0) {
 			phase2Select->setCurrentIndex(i);
 			break;
 		}
 	}
+	*/
 }
 
 
@@ -207,7 +211,7 @@ void NetworkConfig::addNetwork()
 			return;
 		}
 	}
-
+	/*
 	if (idstrEdit->isEnabled() && !idstrEdit->text().isEmpty()) {
 		QRegExp rx("^(\\w|-)+$");
 		if (rx.indexIn(idstrEdit->text()) < 0) {
@@ -223,7 +227,7 @@ void NetworkConfig::addNetwork()
 			return;
 		}
 	}
-
+	*/
 	if (wpagui == NULL)
 		return;
 
@@ -311,6 +315,7 @@ void NetworkConfig::addNetwork()
 		else
 			setNetworkParam(id, "pcsc", "NULL", false);
 	}
+	/*
 	if (phase2Select->isEnabled()) {
 		QString eap = eapSelect->currentText();
 		QString inner = phase2Select->currentText();
@@ -358,6 +363,7 @@ void NetworkConfig::addNetwork()
 			setNetworkParam(id, "phase2", "NULL", false);
 	} else
 		setNetworkParam(id, "phase2", "NULL", false);
+	*/
 	if (identityEdit->isEnabled() && identityEdit->text().length() > 0)
 		setNetworkParam(id, "identity",
 				identityEdit->text().toAscii().constData(),
@@ -391,21 +397,22 @@ void NetworkConfig::addNetwork()
 		setNetworkParam(id, "wep_tx_keyidx", "2", false);
 	else if (wep3Radio->isEnabled() && wep3Radio->isChecked())
 		setNetworkParam(id, "wep_tx_keyidx", "3", false);
-
+	/*
 	if (idstrEdit->isEnabled() && idstrEdit->text().length() > 0)
 		setNetworkParam(id, "id_str",
 				idstrEdit->text().toAscii().constData(),
 				true);
 	else
 		setNetworkParam(id, "id_str", "NULL", false);
-
+	*/
+	/*
 	if (prioritySpinBox->isEnabled()) {
 		QString prio;
 		prio = prio.setNum(prioritySpinBox->value());
 		setNetworkParam(id, "priority", prio.toAscii().constData(),
 				false);
 	}
-
+	*/
 	snprintf(cmd, sizeof(cmd), "ENABLE_NETWORK %d", id);
 	reply_len = sizeof(reply);
 	wpagui->ctrlRequest(cmd, reply, &reply_len);
@@ -680,14 +687,14 @@ void NetworkConfig::paramsFromConfig(int network_id)
 	case NO_INNER:
 		break;
 	}
-
+	/*
 	for (i = 0; i < phase2Select->count(); i++) {
 		if (phase2Select->itemText(i).compare(val) == 0) {
 			phase2Select->setCurrentIndex(i);
 			break;
 		}
 	}
-
+	*/
 	for (i = 0; i < 4; i++) {
 		QLineEdit *wepEdit;
 		switch (i) {
@@ -771,7 +778,7 @@ void NetworkConfig::paramsFromConfig(int network_id)
 		pos = strchr(reply + 1, '"');
 		if (pos)
 			*pos = '\0';
-		idstrEdit->setText(reply + 1);
+		//		idstrEdit->setText(reply + 1);
 	}
 
 	snprintf(cmd, sizeof(cmd), "GET_NETWORK %d priority", network_id);
@@ -779,7 +786,7 @@ void NetworkConfig::paramsFromConfig(int network_id)
 	if (wpagui->ctrlRequest(cmd, reply, &reply_len) >= 0 && reply_len >= 1)
 	{
 		reply[reply_len] = '\0';
-		prioritySpinBox->setValue(atoi(reply));
+		//		prioritySpinBox->setValue(atoi(reply));
 	}
 
 	authSelect->setCurrentIndex(auth);
