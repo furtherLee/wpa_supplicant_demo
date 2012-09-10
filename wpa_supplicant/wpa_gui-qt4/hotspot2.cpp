@@ -33,9 +33,10 @@ void Hotspot2::addMap(){
   accessTypeMap.insert("15", new QString("Wildcardx"));
 
   stageColorMap.insert(0, new QString("gainsboro"));
-  stageColorMap.insert(1, new QString("orange"));
-  stageColorMap.insert(2, new QString("lightgreen"));  
-
+  stageColorMap.insert(1, new QString("purple"));
+  stageColorMap.insert(2, new QString("orange"));
+  stageColorMap.insert(3, new QString("lightgreen"));  
+  
 }
 
 QString Hotspot2::getAccessNetworkType(QString query){

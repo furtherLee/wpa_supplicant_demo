@@ -24,9 +24,10 @@ arbiter *arbiter_init(struct wpa_supplicant *wpa_s){
 
   res->state = ARBITER_IDLE;
   res->wpa_s = wpa_s;
-  res->filter_num = 2;
-  res->filters[0] = access_internet_filter;
-  res->filters[1] = random_filter;
+  res->filter_num = 3;
+  res->filters[0] = free_public_filter;
+  res->filters[1] = access_internet_filter;
+  res->filters[2] = random_filter;
   res->set_auto = 0;
   event_init(wpa_s);
   return res;

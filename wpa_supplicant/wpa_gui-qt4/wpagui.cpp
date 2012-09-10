@@ -947,6 +947,9 @@ void WpaGui::processMsg(char *msg)
 				tr("Connection to network established."));
 		QTimer::singleShot(5 * 1000, this, SLOT(showTrayStatus()));
 		stopWpsRun(true);
+
+		/** Well use dhclient here for demo **/
+		system("dhclient wlan0");
 	} else if (str_match(pos, WPS_EVENT_AP_AVAILABLE_PBC)) {
 		wpsStatusText->setText(tr("WPS AP in active PBC mode found"));
 		if (textStatus->text() == "INACTIVE" ||
