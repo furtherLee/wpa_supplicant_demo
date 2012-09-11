@@ -113,6 +113,7 @@ void ScanResults::updateResults()
 		if (bssid.isEmpty())
 			break;
 	}
+	scanResultsWidget->resizeColumnToContents(0);
 }
 
 

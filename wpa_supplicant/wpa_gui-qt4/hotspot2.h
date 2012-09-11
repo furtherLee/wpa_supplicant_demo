@@ -18,6 +18,7 @@ public:
 public slots:
   virtual void setWpaGui(WpaGui *_wpagui);
   virtual void fresh();
+  virtual void setOUI(const QString &oui);
 protected slots:
   virtual void languageChange();
 
@@ -35,7 +36,6 @@ private:
   void highlight(QString str);
 public:
   virtual void notify(WpaMsg msg);
-  virtual void setOUI(const QString &oui);
 private:
   WpaGui *wpagui;
   QMap<QString, QString*> OUIMap;

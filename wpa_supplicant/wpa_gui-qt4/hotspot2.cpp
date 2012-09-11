@@ -14,6 +14,7 @@ void Hotspot2::binding(){
   connect(autoSelectButton, SIGNAL(clicked()), this, SLOT(interworkingSelect()));
   //  connect(freshButton, SIGNAL(clicked()), this, SLOT(fresh()));
   //  connect(fetchANQPButton, SIGNAL(clicked()), this, SLOT(fetch()));
+  connect(carrierSelect, SIGNAL(activated(const QString&)), this, SLOT(setOUI(const QString&)));
 }
 
 void Hotspot2::addMap(){
@@ -71,7 +72,13 @@ Hotspot2::Hotspot2(QWidget *parent, const char *, bool, Qt::WFlags)
 }
 
 void Hotspot2::setOUI(const QString &oui){
-  ouiLab->setText(oui);
+  //  ouiLab->setText(oui);
+  QString cmd = "SET_OUI 00071c";
+  char buf[64];
+  size_t buflen;
+
+  wpagui->ctrlRequest(cmd.toAscii(), buf, &buflen);
+
 }
 
 void Hotspot2::interworkingSelect(){
