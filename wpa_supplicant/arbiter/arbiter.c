@@ -236,3 +236,9 @@ int arbiter_get_anqp_info(struct wpa_supplicant *wpa_s, char *cmd, char *reply, 
 
   return ret;
 }
+
+int arbiter_set_oui(struct wpa_supplicant *wpa_s, char* buf, char* reply){
+  sscanf(buf, "%s", wpa_s->arbiter->oui);
+  return 1;
+}
+

@@ -23,6 +23,7 @@ typedef struct arbiter_type{
   int filter_num;
   arbiter_filter filters[MAX_FILTER_NUM];
   int set_auto;
+  char oui[64];
 } arbiter;
 
 arbiter *arbiter_init(struct wpa_supplicant *wpa_s);
@@ -31,5 +32,5 @@ struct wpa_bss *arbiter_select(struct dl_list *list, struct wpa_supplicant *wpa_
 void arbiter_disconnect_occur(struct wpa_supplicant *wpa_s);
 int arbiter_set_auto(struct wpa_supplicant *wpa_s, char* buf, char* reply);
 int arbiter_get_anqp_info(struct wpa_supplicant *wpas, char *buf, char *reply, size_t reply_size);
-
+int arbiter_set_oui(struct wpa_supplicant *wpa_s, char* buf, char* reply);
 #endif
