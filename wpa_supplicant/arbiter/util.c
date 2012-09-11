@@ -122,3 +122,20 @@ int is_free_public(struct wpa_bss *bss){
   int type = ie[0] & 0x0f;
   return (type == 3)? 1:0;
 }
+
+int oui_contains(struct wpa_bss *bss, char *oui){
+  struct wpabuf *list = bss->anqp_roaming_consortium;
+
+  const u8 *pos = wpabuf_head_u8(list);
+  const u8 *end = pos + wpabuf_len(list);
+
+  char mark[64];
+
+  for(;pos != end; pos = pos + *pos + 1){
+    wpa_snprintf_hex(mark, 64, pos + 1, *pos);
+    wpa_printf(MSG_INFO, "%s %s", mark, oui);
+    if (os_strcmp(mark, oui) == 0)
+      return 1;
+  }
+  return 0;
+}

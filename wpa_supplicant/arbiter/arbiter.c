@@ -24,10 +24,11 @@ arbiter *arbiter_init(struct wpa_supplicant *wpa_s){
 
   res->state = ARBITER_IDLE;
   res->wpa_s = wpa_s;
-  res->filter_num = 3;
-  res->filters[0] = free_public_filter;
-  res->filters[1] = access_internet_filter;
-  res->filters[2] = random_filter;
+  res->filter_num = 4;
+  res->filters[0] = oui_filter;
+  res->filters[1] = free_public_filter;
+  res->filters[2] = access_internet_filter;
+  res->filters[3] = random_filter;
   res->set_auto = 0;
   event_init(wpa_s);
   return res;
@@ -239,6 +240,7 @@ int arbiter_get_anqp_info(struct wpa_supplicant *wpa_s, char *cmd, char *reply, 
 
 int arbiter_set_oui(struct wpa_supplicant *wpa_s, char* buf, char* reply){
   sscanf(buf, "%s", wpa_s->arbiter->oui);
-  return 1;
+  os_memcpy(reply, "SETTED\n", 7);
+  return 7;
 }
 

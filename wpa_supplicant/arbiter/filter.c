@@ -2,6 +2,8 @@
 #include "filter.h"
 #include "utils/list.h"
 #include "util.h"
+#include "arbiter.h"
+#include "../wpa_supplicant_i.h"
 
 void remove_candidate(filter_candidate *candidate){
   // TODO
@@ -61,7 +63,7 @@ struct dl_list* access_internet_filter(struct dl_list *candidates, void *context
     os_free(wait_to_delete);
     wait_to_delete = NULL;
   }
-
+  
   return candidates;
 }
 
@@ -96,4 +98,30 @@ filter_candidate* build_candidate(struct wpa_bss *bss){
     return NULL;
   ret->bss = bss;
   return ret;
+}
+
+struct dl_list* oui_filter(struct dl_list *candidates, void *context){
+  filter_candidate *item = NULL;
+  filter_candidate *wait_to_delete = NULL;
+  struct wpa_supplicant *wpa_s = (struct wpa_supplicant *)context;
+  
+  arbiter_message((struct wpa_supplicant *)context, "OUI Filter starts working...");
+
+  dl_list_for_each(item, candidates, filter_candidate, list){
+    if(wait_to_delete){
+      dl_list_del(&wait_to_delete->list);
+      os_free(wait_to_delete);
+      wait_to_delete = NULL;
+    }
+    if (!oui_contains(item->bss, wpa_s->arbiter->oui))
+      wait_to_delete = item;
+  }
+
+  if(wait_to_delete){
+    dl_list_del(&wait_to_delete->list);
+    os_free(wait_to_delete);
+    wait_to_delete = NULL;
+  }
+
+  return candidates;  
 }

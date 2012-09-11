@@ -42,6 +42,7 @@ private:
   QMap<QString, QString*> accessTypeMap;
   int filterStage;
   QMap<int, QString*> stageColorMap;
+  bool colored;
 };
 
 #endif

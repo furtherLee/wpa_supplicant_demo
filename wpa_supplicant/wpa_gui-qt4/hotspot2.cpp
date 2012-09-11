@@ -35,8 +35,8 @@ void Hotspot2::addMap(){
   stageColorMap.insert(0, new QString("gainsboro"));
   stageColorMap.insert(1, new QString("purple"));
   stageColorMap.insert(2, new QString("orange"));
-  stageColorMap.insert(3, new QString("lightgreen"));  
-  
+  stageColorMap.insert(3, new QString("red"));
+  stageColorMap.insert(4, new QString("lightgreen"));  
 }
 
 QString Hotspot2::getAccessNetworkType(QString query){
@@ -67,7 +67,7 @@ Hotspot2::Hotspot2(QWidget *parent, const char *, bool, Qt::WFlags)
   setupUi(this);
   binding();
   addMap();
-  
+  colored = false;
 }
 
 void Hotspot2::setOUI(const QString &oui){
@@ -77,6 +77,7 @@ void Hotspot2::setOUI(const QString &oui){
 void Hotspot2::interworkingSelect(){
   char reply[64];
   size_t reply_len;
+  colored = false;
   filterStage = 0;
   wpagui->disconnect();
   wpagui->showTrayMessage(QSystemTrayIcon::Information, 5, "Start Interworking Select");
@@ -122,11 +123,13 @@ void Hotspot2::notify(WpaMsg msg){
   if (str.startsWith("Arbiter: All interworking networks available are")){
     filterStage = 0;
     stageChange = true;
+    colored = true;
   }
     
   if (str.endsWith("Filter starts working...")){
     stageChange =true;
     filterStage++;
+    colored = true;
   }
   
   if (str.startsWith("Arbiter: AP - "))
@@ -137,9 +140,12 @@ void Hotspot2::notify(WpaMsg msg){
 
   if(!str.startsWith("Arbiter: "))
     return;
+
   QString output = str.mid(str.indexOf("Arbiter: ") + 9);
-  if (stageChange)
+  if (colored)
     output = "<font color=\"" + *stageColorMap.value(filterStage) + "\">" +  output + "</font>";
+  else
+    output = "<font color=\"black\">" + output + "</font>";
   append(output);
 
 }
