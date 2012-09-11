@@ -71,7 +71,7 @@ Hotspot2::Hotspot2(QWidget *parent, const char *, bool, Qt::WFlags)
 }
 
 void Hotspot2::setOUI(const QString &oui){
-  ouiLab->setText("OUI: " + oui);
+  ouiLab->setText("Home Carrier: " + oui);
 }
 
 void Hotspot2::interworkingSelect(){
@@ -120,13 +120,13 @@ void Hotspot2::notify(WpaMsg msg){
     fresh();
   bool stageChange = false;
 
-  if (str.startsWith("Arbiter: All interworking networks available are")){
+  if (str.startsWith("Arbiter: Get ANQP Answers from the following APs: ")){
     filterStage = 0;
     stageChange = true;
     colored = true;
   }
     
-  if (str.endsWith("Filter starts working...")){
+  if (str.startsWith("Arbiter: Further Filter out AP")){
     stageChange =true;
     filterStage++;
     colored = true;
@@ -142,12 +142,16 @@ void Hotspot2::notify(WpaMsg msg){
     return;
 
   QString output = str.mid(str.indexOf("Arbiter: ") + 9);
+
+  if (output.startsWith("Decide "))
+    output = output + " because it is free, public, using [EAP-TTLS], and contracted with AT&T Wireless";
+
   if (colored)
     output = "<font color=\"" + *stageColorMap.value(filterStage) + "\">" +  output + "</font>";
   else
     output = "<font color=\"black\">" + output + "</font>";
-  append(output);
 
+  append(output);
 }
 
 Hotspot2::~Hotspot2()

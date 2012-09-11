@@ -26,8 +26,8 @@ arbiter *arbiter_init(struct wpa_supplicant *wpa_s){
   res->wpa_s = wpa_s;
   res->filter_num = 4;
   res->filters[0] = oui_filter;
-  res->filters[1] = free_public_filter;
-  res->filters[2] = access_internet_filter;
+  res->filters[1] = access_internet_filter;
+  res->filters[2] = free_public_filter;
   res->filters[3] = random_filter;
   res->set_auto = 0;
   event_init(wpa_s);
@@ -46,12 +46,12 @@ struct wpa_bss *arbiter_select(struct dl_list *list, struct wpa_supplicant *wpa_
   arbiter *arbiter = wpa_s->arbiter;
   arbiter->state = ARBITER_DECIDING;
   arbiter_message(wpa_s, "All information retrieved, start selecting process.");
-  arbiter_message(wpa_s, "All interworking networks available are:");
+  arbiter_message(wpa_s, "Get ANQP Answers from the following APs: ");
   display_candidates(wpa_s, ret);
 
   for(i = 0; i < arbiter->filter_num; ++i){
     ret = arbiter->filters[i](list, wpa_s);
-    arbiter_message(wpa_s, "After this filter, candidates left are:");
+    //    arbiter_message(wpa_s, "After this filter, candidates left are:");
     display_candidates(wpa_s, ret);
     if(dl_list_empty(ret))
       break;
@@ -65,6 +65,11 @@ struct wpa_bss *arbiter_select(struct dl_list *list, struct wpa_supplicant *wpa_
 
   filter_candidate *candidate = dl_list_first(ret, filter_candidate, list);
   struct wpa_bss *ans = candidate->bss;
+
+
+  char cmd[128];
+  os_snprintf(cmd, 128, "Decide %s", ans->ssid);
+  arbiter_message(wpa_s, cmd);
   os_free(candidate);
 
   return ans;

@@ -255,6 +255,12 @@
     </item>
     <item>
      <widget class="QLabel" name="ouiLab">
+      <property name="font">
+       <font>
+        <family>Bitstream Charter</family>
+        <pointsize>9</pointsize>
+       </font>
+      </property>
       <property name="text">
        <string/>
       </property>

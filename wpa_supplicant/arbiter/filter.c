@@ -25,7 +25,7 @@ struct dl_list* random_filter(struct dl_list *candidates, void *context){
   filter_candidate *pointer = NULL;
   int i = 0;
   
-  arbiter_message((struct wpa_supplicant *)context, "Random Filter starts working...");
+  arbiter_message((struct wpa_supplicant *)context, "Further Filter out AP to choose one randomly: ");
 
   while(!dl_list_empty(candidates)){
     pointer = dl_list_first(candidates, filter_candidate, list);
@@ -46,7 +46,7 @@ struct dl_list* access_internet_filter(struct dl_list *candidates, void *context
   filter_candidate *item = NULL;
   filter_candidate *wait_to_delete = NULL;
 
-  arbiter_message((struct wpa_supplicant *)context, "Accessing Internet Filter starts working...");
+  arbiter_message((struct wpa_supplicant *)context, "Further Filter out APs which can Access Internet: ");
 
   dl_list_for_each(item, candidates, filter_candidate, list){
     if(wait_to_delete){
@@ -71,7 +71,7 @@ struct dl_list* free_public_filter(struct dl_list *candidates, void *context){
   filter_candidate *item = NULL;
   filter_candidate *wait_to_delete = NULL;
 
-  arbiter_message((struct wpa_supplicant *)context, "Free-Public Filter starts working...");
+  arbiter_message((struct wpa_supplicant *)context, "Further Filter out APs with Free Public Access: ");
 
   dl_list_for_each(item, candidates, filter_candidate, list){
     if(wait_to_delete){
@@ -105,7 +105,7 @@ struct dl_list* oui_filter(struct dl_list *candidates, void *context){
   filter_candidate *wait_to_delete = NULL;
   struct wpa_supplicant *wpa_s = (struct wpa_supplicant *)context;
   
-  arbiter_message((struct wpa_supplicant *)context, "OUI Filter starts working...");
+  arbiter_message((struct wpa_supplicant *)context, "Further Filter out APs contracted with my Home Carreir");
 
   dl_list_for_each(item, candidates, filter_candidate, list){
     if(wait_to_delete){
