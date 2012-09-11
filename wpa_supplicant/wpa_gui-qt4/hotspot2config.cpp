@@ -18,6 +18,7 @@ Hotspot2Config::Hotspot2Config(QWidget *parent, const char *, bool, Qt::WFlags)
 
 void Hotspot2Config::binding(){
   connect(ouiEdit, SIGNAL(textChanged(const QString &)), this, SLOT(search(const QString &)));
+  connect(saveButton, SIGNAL(clicked()), this, SLOT(save()));
 }
 
 void Hotspot2Config::addMap(){
@@ -41,7 +42,7 @@ void Hotspot2Config::setWpaGui(WpaGui *_wpagui){
 }
 
 void Hotspot2Config::save(){
-  done(0);
+  close();
 }
 
 void Hotspot2Config::search(const QString &text){
@@ -58,7 +59,3 @@ void Hotspot2Config::search(const QString &text){
 void Hotspot2Config::uploadCert(){
 
 }
-
-
-
-
