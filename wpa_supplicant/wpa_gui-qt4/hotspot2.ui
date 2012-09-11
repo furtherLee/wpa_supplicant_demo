@@ -221,7 +221,7 @@
      <x>560</x>
      <y>0</y>
      <width>241</width>
-     <height>186</height>
+     <height>193</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -254,17 +254,34 @@
      </widget>
     </item>
     <item>
-     <widget class="QLabel" name="ouiLab">
-      <property name="font">
-       <font>
-        <family>Bitstream Charter</family>
-        <pointsize>9</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
+     <layout class="QFormLayout" name="formLayout_2">
+      <item row="0" column="1">
+       <widget class="QLabel" name="ouiLab">
+        <property name="font">
+         <font>
+          <family>Bitstream Charter</family>
+          <pointsize>9</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_2">
+        <property name="font">
+         <font>
+          <family>Bitstream Charter</family>
+          <pointsize>9</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>        Home Carrier:</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </item>
     <item>
      <widget class="QCheckBox" name="interAcceessCheck">

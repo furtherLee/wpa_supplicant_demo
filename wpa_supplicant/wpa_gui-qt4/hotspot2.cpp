@@ -71,7 +71,7 @@ Hotspot2::Hotspot2(QWidget *parent, const char *, bool, Qt::WFlags)
 }
 
 void Hotspot2::setOUI(const QString &oui){
-  ouiLab->setText("Home Carrier: " + oui);
+  ouiLab->setText(oui);
 }
 
 void Hotspot2::interworkingSelect(){
