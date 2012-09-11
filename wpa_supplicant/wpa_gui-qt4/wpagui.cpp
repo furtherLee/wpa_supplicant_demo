@@ -150,6 +150,7 @@ WpaGui::WpaGui(QApplication *_app, QWidget *parent, const char *, Qt::WFlags)
 	hs20 = NULL;
 	hs20Config = NULL;
 	ctrl_iface_dir = strdup("/var/run/wpa_supplicant");
+	oui = "Unknown";
 
 	parse_argv();
 
@@ -1838,3 +1839,13 @@ void WpaGui::saveState()
 	settings.endGroup();
 }
 #endif
+
+void WpaGui::notifyOUI(const QString &o){
+  oui = o;
+  if (hs20)
+    hs20->setOUI(o);
+}
+
+QString WpaGui::getOUI(){
+  return oui;
+}

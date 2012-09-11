@@ -35,7 +35,7 @@ private:
   void highlight(QString str);
 public:
   virtual void notify(WpaMsg msg);
-
+  virtual void setOUI(const QString &oui);
 private:
   WpaGui *wpagui;
   QMap<QString, QString*> OUIMap;

@@ -42,6 +42,21 @@ void Hotspot2Config::setWpaGui(WpaGui *_wpagui){
 }
 
 void Hotspot2Config::save(){
+  QString text = ouiEdit->text();
+  QString ans;
+  if (OUIMap.contains(text))
+    ans = *OUIMap.value(text);
+  else
+    ans = "Unknown";
+
+  QString cmd = "SET_OUI " + text;
+
+  char buf[64];
+  size_t buflen;
+
+  wpagui->notifyOUI(ans);
+  wpagui->ctrlRequest(cmd.toAscii(), buf, &buflen);
+  
   close();
 }
 

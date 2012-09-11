@@ -67,7 +67,11 @@ Hotspot2::Hotspot2(QWidget *parent, const char *, bool, Qt::WFlags)
   setupUi(this);
   binding();
   addMap();
-  // TODO
+  
+}
+
+void Hotspot2::setOUI(const QString &oui){
+  ouiLab->setText("OUI: " + oui);
 }
 
 void Hotspot2::interworkingSelect(){
@@ -153,6 +157,7 @@ void Hotspot2::setWpaGui(WpaGui *_wpagui)
 {
 	wpagui = _wpagui;
 	fresh();
+	setOUI(wpagui->getOUI());
 }
 
 void Hotspot2::fresh(){

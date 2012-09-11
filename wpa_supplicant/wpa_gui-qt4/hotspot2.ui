@@ -221,7 +221,7 @@
      <x>560</x>
      <y>0</y>
      <width>241</width>
-     <height>181</height>
+     <height>186</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -250,6 +250,13 @@
       </property>
       <property name="text">
        <string>Contracted with Home Carrier</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="ouiLab">
+      <property name="text">
+       <string/>
       </property>
      </widget>
     </item>
@@ -320,12 +327,6 @@
     </item>
    </layout>
   </widget>
-  <zorder>hs20APWidget</zorder>
-  <zorder>interworkingStationLabel</zorder>
-  <zorder>verticalLayoutWidget</zorder>
-  <zorder>verticalLayoutWidget_2</zorder>
-  <zorder>verticalSpacer</zorder>
-  <zorder>verticalSpacer</zorder>
  </widget>
  <resources/>
  <connections/>

@@ -146,11 +146,18 @@ private:
 	QApplication *app;
 	bool inTray;
 
+ public:
+	void notifyOUI(const QString &o);
+	QString getOUI();
+
  private:
 	Hotspot2 *hs20;
 	Hotspot2Config *hs20Config;
 	QAction *hs20Action;
 	QAction *hs20ConfigAction;
+	QString oui;
+	
+
  public slots:
 	virtual void openHotspot2();
 	virtual void interworkingAutoSelect();
