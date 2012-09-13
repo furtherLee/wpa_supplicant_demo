@@ -139,8 +139,8 @@ void Hotspot2::notify(WpaMsg msg){
     colored = true;
   }
   
-  if (str.startsWith("Arbiter: AP - "))
-    highlight(str.mid(str.indexOf("Arbiter: AP - ") + 14));  
+  //  if (str.startsWith("Arbiter: AP - "))
+  //    highlight(str.mid(str.indexOf("Arbiter: AP - ") + 14));  
   /*
    * Deal with Arbiter Message
    */
@@ -152,6 +152,8 @@ void Hotspot2::notify(WpaMsg msg){
 
   if (output.startsWith("Decide "))
     output = output + " because it is free, public, using [EAP-TTLS], and contracted with AT&T Wireless";
+
+  colored = false;
 
   if (colored)
     output = "<font color=\"" + *stageColorMap.value(filterStage) + "\">" +  output + "</font>";
