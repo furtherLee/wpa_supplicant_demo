@@ -1373,7 +1373,7 @@ void WpaGui::createTrayIcon(bool trayOnly)
 	tray_menu->addSeparator();
 
 	eventAction = new QAction(tr("&Event History"), this);
-	scanAction = new QAction(tr("Scan &Results"), this);
+	scanAction = new QAction(tr("&Scan"), this);
 	statAction = new QAction(tr("S&tatus"), this);
 	connect(eventAction, SIGNAL(triggered()), this, SLOT(eventHistory()));
 	connect(scanAction, SIGNAL(triggered()), this, SLOT(scan()));
@@ -1394,16 +1394,16 @@ void WpaGui::createTrayIcon(bool trayOnly)
 	tray_menu->addSeparator();
 
 	/** add for hotspot 2 **/
-	hs20Action = new QAction(tr("Hotspot 2.0 &Run"), this);
-	hs20ConfigAction = new QAction(tr("Hotspot 2.0 &Config"), this);
+	hs20Action = new QAction(tr("&Hotspot 2.0"), this);
+	//	hs20ConfigAction = new QAction(tr("Hotspot 2.0 &Config"), this);
 	connect(hs20Action, SIGNAL(triggered()), this,
 		SLOT(openHotspot2()));
-	connect(hs20ConfigAction, SIGNAL(triggered()), this,
-		SLOT(openHotspot2Config()));
+	//	connect(hs20ConfigAction, SIGNAL(triggered()), this,
+	//	SLOT(openHotspot2Config()));
 	
 
 	tray_menu->addAction(hs20Action);
-	tray_menu->addAction(hs20ConfigAction);
+	//	tray_menu->addAction(hs20ConfigAction);
 	tray_menu->addSeparator();
 	tray_menu->addAction(quitAction);
 
