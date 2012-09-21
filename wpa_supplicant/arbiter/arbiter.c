@@ -249,3 +249,51 @@ int arbiter_set_oui(struct wpa_supplicant *wpa_s, char* buf, char* reply){
   return 7;
 }
 
+static void arbiter_add_filter(arbiter *arbiter, const char* filter_name){
+  if (os_strcmp(filter_name, "consortium_filter") == 0){
+    arbiter->filters[arbiter->filter_num++] = consortium_filter;
+  }
+  else if (os_strcmp(filter_name, "access_internet_filter") == 0){
+    arbiter->filters[arbiter->filter_num++] = access_internet_filter;
+  }
+  else if (os_strcmp(filter_name, "free_public_filter") == 0){
+    arbiter->filters[arbiter->filter_num++] = free_public_filter;
+  }
+  else if (os_strcmp(filter_name, "oui_filter") == 0){
+    arbiter->filters[arbiter->filter_num++] = oui_filter;
+  }
+  else if (os_strcmp(filter_name, "random_filter") == 0){
+    arbiter->filters[arbiter->filter_num++] = random_filter;
+  }  
+  else{
+    wpa_printf(MSG_DEBUG, "Undefined filter");
+  }
+}
+
+static void parse_algorithm_option(arbiter *arbiter, const char *option){
+  char key[128], value[256];
+  char *p;
+  sscanf(option, "%s=%s", key, value);
+  if (os_strcmp(key, "oui") == 0){
+    sscanf(value, "%s", arbiter->oui);
+  }
+  else if (os_strcmp(key, "algorithm_order") == 0){
+    arbiter->filter_num = 0;
+    for (p = strtok(value, ","); p != NULL; p = strtok(NULL, ",")){
+      arbiter_add_filter(arbiter, p);
+    }
+    arbiter_add_filter(arbiter, "random_filter");
+  }
+  else
+    wpa_printf(MSG_DEBUG, "Undefined arbiter algorithm option");
+}
+
+int arbiter_set_algorithm(struct wpa_supplicant *wpa_s, char* buf, char* reply){
+  char *p;
+
+  for(p = strtok (buf, "\n"); p != NULL; p = strtok(NULL, "\n"))
+    parse_algorithm_option(wpa_s->arbiter, p);
+  
+  os_memcpy(reply, "OK\n", 3);
+  return 3;
+}
