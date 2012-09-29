@@ -172,34 +172,46 @@ void Hotspot2::highlight(QString str){
     item->setBackground(i, b);
 }
 
-QString Hotspot2::buildDecisionReason(){
-  QString ret;
+QString Hotspot2::getAuthMethod(QString name){
+  QList<QTreeWidgetItem *> list = hs20APWidget->findItems(name, Qt::MatchExactly, 0);
+  if (list.size() != 1)
+    return "nothing for authentication";
+  QTreeWidgetItem *item = list.first();  
+  return item->text(4);
+}
 
+QString Hotspot2::buildDecisionReason(QString decision){
+
+  QString ret;
+  
   if (contractedCheck->isChecked()){
-    if (ret.endsWith(" is "))
+    if (!ret.isEmpty())
       ret += ", ";
     ret += "contracted with " + carrierSelect->currentText();
   }
 
   if (lowFeeCheck->isChecked()) {
-    if (ret.endsWith(" is "))
+    if (!ret.isEmpty())
       ret += ", ";  
     ret += "free, public";
   }
   
   if (interAccessCheck->isChecked()) {
-    if (ret.endsWith(" is "))
+    if (!ret.isEmpty())
       ret += ", ";
     ret += "internet accessible";
   }
 
   if (ip6Check->isChecked()) {
-    if (ret.endsWith(" is "))
+    if (!ret.isEmpty())
       ret += ", ";
     ret += "ipv6 capable";
   }
   
-  ret += "\n";
+  if (!ret.isEmpty())
+    ret += ", ";
+
+  ret += "using " + getAuthMethod(decision) + "\n";
 
   return ret;
 }
@@ -233,9 +245,10 @@ void Hotspot2::notify(WpaMsg msg){
 
   QString output = str.mid(str.indexOf("Arbiter: ") + 9);
 
-  if (output.startsWith("Decide "))
-    output = output + " because it is " + buildDecisionReason();
-
+  if (output.startsWith("Choose ")){
+    QString decision = output.mid(output.indexOf("Choose ") + 7);
+    output = "Choose \"" + decision + "\" because it is " + buildDecisionReason(decision);
+  }
   colored = false;
 
   if (colored)

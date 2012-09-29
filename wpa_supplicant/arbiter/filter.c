@@ -125,3 +125,35 @@ struct dl_list* oui_filter(struct dl_list *candidates, void *context){
 
   return candidates;  
 }
+
+struct dl_list* signal_filter(struct dl_list *candidates, void *context){
+  filter_candidate *item = NULL;
+  filter_candidate *wait_to_delete = NULL;
+
+  int maxLevel = -1000000;
+  arbiter_message((struct wpa_supplicant *)context, "Further Filter out APs with Highest Signal Quality");
+
+  dl_list_for_each(item, candidates, filter_candidate, list){
+    if (item->bss->level > maxLevel)
+      maxLevel = item->bss->level;    
+    wpa_printf(MSG_INFO, "Max Quality: %d, my Quality: %d", maxLevel, item->bss->level);
+  }
+  
+  dl_list_for_each(item, candidates, filter_candidate, list){
+    if(wait_to_delete){
+      dl_list_del(&wait_to_delete->list);
+      os_free(wait_to_delete);
+      wait_to_delete = NULL;
+    }
+    if (item->bss->level != maxLevel)
+      wait_to_delete = item;
+  }
+
+  if(wait_to_delete){
+    dl_list_del(&wait_to_delete->list);
+    os_free(wait_to_delete);
+    wait_to_delete = NULL;
+  }  
+
+  return candidates;    
+}

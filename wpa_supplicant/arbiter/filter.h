@@ -30,6 +30,8 @@ struct dl_list* free_public_filter(struct dl_list *candidates, void *context);
 
 struct dl_list* oui_filter(struct dl_list *candidates, void *context);
 
+struct dl_list* signal_filter(struct dl_list *candidates, void *context);
+
 filter_candidate* build_candidate(struct wpa_bss *bss);
 
 #endif

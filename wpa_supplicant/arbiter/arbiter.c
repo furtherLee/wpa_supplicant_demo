@@ -68,7 +68,7 @@ struct wpa_bss *arbiter_select(struct dl_list *list, struct wpa_supplicant *wpa_
 
 
   char cmd[128];
-  os_snprintf(cmd, 128, "Decide %s", ans->ssid);
+  os_snprintf(cmd, 128, "Choose %s", ans->ssid);
   arbiter_message(wpa_s, cmd);
   os_free(candidate);
 
@@ -258,6 +258,9 @@ static void arbiter_add_filter(arbiter *arbiter, const char* filter_name){
   }
   else if (os_strcmp(filter_name, "random_filter") == 0){
     arbiter->filters[arbiter->filter_num++] = random_filter;
+  }
+  else if (os_strcmp(filter_name, "signal_filter") == 0){
+    arbiter->filters[arbiter->filter_num++] = signal_filter;
   }  
   else{
     wpa_printf(MSG_DEBUG, "Undefined filter");
@@ -276,6 +279,7 @@ static void parse_algorithm_option(arbiter *arbiter, const char *option){
     for (p = strtok(value, ","); p != NULL; p = strtok(NULL, ",")){
       arbiter_add_filter(arbiter, p);
     }
+    arbiter_add_filter(arbiter, "signal_filter");
     arbiter_add_filter(arbiter, "random_filter");
   }
   else
