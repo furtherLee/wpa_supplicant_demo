@@ -33,6 +33,8 @@ private:
   void addMap();
   QString getConsortium(QString query);
   QString getAccessNetworkType(QString query);
+  QString buildAlgOptions();
+  QString getOuiCode(const QString &name);
   void highlight(QString str);
 public:
   virtual void notify(WpaMsg msg);

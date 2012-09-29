@@ -73,12 +73,57 @@ Hotspot2::Hotspot2(QWidget *parent, const char *, bool, Qt::WFlags)
 
 void Hotspot2::setOUI(const QString &oui){
   //  ouiLab->setText(oui);
-  QString cmd = "SET_OUI 00071c";
+  QString cmd = "SET_OUI " + oui;
   char buf[64];
   size_t buflen;
 
   wpagui->ctrlRequest(cmd.toAscii(), buf, &buflen);
 
+}
+
+QString Hotspot2::getOuiCode(const QString &name){
+  QMap<QString, QString*>::const_iterator i;
+  for (i = OUIMap.constBegin(); i != OUIMap.constEnd(); ++i)
+    if (*(i.value()) == name)
+      return i.key();
+}
+
+QString Hotspot2::buildAlgOptions(){
+  QString ret;
+  QString orders = "algorithm_order=";
+
+  if (contractedCheck->isChecked()){
+
+    ret += "oui=" + getOuiCode(carrierSelect->currentText());
+    
+    if (!orders.endsWith("="))
+      orders += ",";    
+    orders += "oui_filter";
+  }
+  
+  if (interAccessCheck->isChecked()) {
+    if (!orders.endsWith("="))
+      orders += ",";
+    orders += "access_internet_filter";
+  }
+
+  if (lowFeeCheck->isChecked()) {
+    if (!orders.endsWith("="))
+      orders += ",";  
+    orders += "free_public_filter";
+  }
+
+  if (ip6Check->isChecked()) {
+    if (!orders.endsWith("="))
+      orders += ",";
+    orders += "ipv6_filter";
+  }
+
+  orders += "\n";
+
+  ret += orders;
+
+  return ret;
 }
 
 void Hotspot2::interworkingSelect(){
@@ -87,6 +132,9 @@ void Hotspot2::interworkingSelect(){
   colored = false;
   filterStage = 0;
   wpagui->disconnect();
+  // Add support for setting filtering algorithm
+  QString cmd = "SET_ARBITER_ALGORITHM " + buildAlgOptions();
+  wpagui->ctrlRequest(cmd.toAscii(), reply, &reply_len);
   wpagui->showTrayMessage(QSystemTrayIcon::Information, 5, "Start Interworking Select");
   wpagui->ctrlRequest("INTERWORKING_SELECT auto", reply, &reply_len);
   arbiterInfoText->clear();
