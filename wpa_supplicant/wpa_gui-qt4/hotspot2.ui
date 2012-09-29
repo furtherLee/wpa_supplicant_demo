@@ -290,7 +290,12 @@
         </item>
         <item>
          <property name="text">
-          <string>T-Mobile Wireless</string>
+          <string>Wi-Fi Alliance</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Silicon Controls</string>
          </property>
         </item>
        </widget>
@@ -325,6 +330,9 @@
     </item>
     <item>
      <widget class="QCheckBox" name="ip6Check">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
       <property name="font">
        <font>
         <family>Bitstream Charter</family>

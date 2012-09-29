@@ -18,10 +18,11 @@ void Hotspot2::binding(){
 }
 
 void Hotspot2::addMap(){
-  OUIMap.insert("00071c", new QString("AT&T Wireless"));
+  OUIMap.insert("00071c", new QString("AT & T Wireless"));
   OUIMap.insert("001bc504bd", new QString("Silicon Controls"));
   OUIMap.insert("506f9a", new QString("Wi-Fi Alliance"));
   OUIMap.insert("0050f2", new QString("Microsoft"));
+  OUIMap.insert("c8a70a", new QString("Verizon Wireless"));
 
   accessTypeMap.insert("UNSET", new QString("UNSET"));
   accessTypeMap.insert("0", new QString("Private Network"));
@@ -86,35 +87,37 @@ QString Hotspot2::getOuiCode(const QString &name){
   for (i = OUIMap.constBegin(); i != OUIMap.constEnd(); ++i)
     if (*(i.value()) == name)
       return i.key();
+
+  return NULL;
 }
 
 QString Hotspot2::buildAlgOptions(){
   QString ret;
-  QString orders = "algorithm_order=";
+  QString orders = "algorithm_order = ";
 
   if (contractedCheck->isChecked()){
 
-    ret += "oui=" + getOuiCode(carrierSelect->currentText());
+    ret += "oui = " + getOuiCode(carrierSelect->currentText()) + "\n";
     
-    if (!orders.endsWith("="))
+    if (!orders.endsWith("= "))
       orders += ",";    
     orders += "oui_filter";
   }
   
   if (interAccessCheck->isChecked()) {
-    if (!orders.endsWith("="))
+    if (!orders.endsWith("= "))
       orders += ",";
     orders += "access_internet_filter";
   }
 
   if (lowFeeCheck->isChecked()) {
-    if (!orders.endsWith("="))
+    if (!orders.endsWith("= "))
       orders += ",";  
     orders += "free_public_filter";
   }
 
   if (ip6Check->isChecked()) {
-    if (!orders.endsWith("="))
+    if (!orders.endsWith("= "))
       orders += ",";
     orders += "ipv6_filter";
   }
@@ -134,6 +137,7 @@ void Hotspot2::interworkingSelect(){
   wpagui->disconnect();
   // Add support for setting filtering algorithm
   QString cmd = "SET_ARBITER_ALGORITHM " + buildAlgOptions();
+
   wpagui->ctrlRequest(cmd.toAscii(), reply, &reply_len);
   wpagui->showTrayMessage(QSystemTrayIcon::Information, 5, "Start Interworking Select");
   wpagui->ctrlRequest("INTERWORKING_SELECT auto", reply, &reply_len);
@@ -166,7 +170,38 @@ void Hotspot2::highlight(QString str){
   QBrush b (color);
   for (int i = 0; i < hs20APWidget->columnCount(); ++i)
     item->setBackground(i, b);
+}
 
+QString Hotspot2::buildDecisionReason(){
+  QString ret;
+
+  if (contractedCheck->isChecked()){
+    if (ret.endsWith(" is "))
+      ret += ", ";
+    ret += "contracted with " + carrierSelect->currentText();
+  }
+
+  if (lowFeeCheck->isChecked()) {
+    if (ret.endsWith(" is "))
+      ret += ", ";  
+    ret += "free, public";
+  }
+  
+  if (interAccessCheck->isChecked()) {
+    if (ret.endsWith(" is "))
+      ret += ", ";
+    ret += "internet accessible";
+  }
+
+  if (ip6Check->isChecked()) {
+    if (ret.endsWith(" is "))
+      ret += ", ";
+    ret += "ipv6 capable";
+  }
+  
+  ret += "\n";
+
+  return ret;
 }
 
 void Hotspot2::notify(WpaMsg msg){
@@ -199,7 +234,7 @@ void Hotspot2::notify(WpaMsg msg){
   QString output = str.mid(str.indexOf("Arbiter: ") + 9);
 
   if (output.startsWith("Decide "))
-    output = output + " because it is free, public, using [EAP-TTLS], and contracted with AT&T Wireless";
+    output = output + " because it is " + buildDecisionReason();
 
   colored = false;
 

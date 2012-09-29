@@ -77,8 +77,6 @@ struct wpa_bss *arbiter_select(struct dl_list *list, struct wpa_supplicant *wpa_
 
 void arbiter_disconnect_occur(struct wpa_supplicant *wpa_s){
 
-  wpa_printf(MSG_INFO, "set_auto: %d", wpa_s->arbiter->set_auto);
-
   if(!wpa_s->arbiter->set_auto)
     return;
 
@@ -89,7 +87,6 @@ void arbiter_disconnect_occur(struct wpa_supplicant *wpa_s){
 }
 
 int arbiter_set_auto(struct wpa_supplicant *wpa_s, char *buf, char* reply){
-  wpa_printf(MSG_INFO, "%s", buf);
 
   if (os_strncmp(buf, "TRUE", 4) == 0){
     wpa_s->arbiter->set_auto = 1;
@@ -250,10 +247,7 @@ int arbiter_set_oui(struct wpa_supplicant *wpa_s, char* buf, char* reply){
 }
 
 static void arbiter_add_filter(arbiter *arbiter, const char* filter_name){
-  if (os_strcmp(filter_name, "consortium_filter") == 0){
-    arbiter->filters[arbiter->filter_num++] = consortium_filter;
-  }
-  else if (os_strcmp(filter_name, "access_internet_filter") == 0){
+  if (os_strcmp(filter_name, "access_internet_filter") == 0){
     arbiter->filters[arbiter->filter_num++] = access_internet_filter;
   }
   else if (os_strcmp(filter_name, "free_public_filter") == 0){
@@ -273,10 +267,10 @@ static void arbiter_add_filter(arbiter *arbiter, const char* filter_name){
 static void parse_algorithm_option(arbiter *arbiter, const char *option){
   char key[128], value[256];
   char *p;
-  sscanf(option, "%s=%s", key, value);
-  if (os_strcmp(key, "oui") == 0){
+  sscanf(option, "%s = %s", key, value);
+  if (os_strcmp(key, "oui") == 0)
     sscanf(value, "%s", arbiter->oui);
-  }
+ 
   else if (os_strcmp(key, "algorithm_order") == 0){
     arbiter->filter_num = 0;
     for (p = strtok(value, ","); p != NULL; p = strtok(NULL, ",")){
@@ -290,7 +284,6 @@ static void parse_algorithm_option(arbiter *arbiter, const char *option){
 
 int arbiter_set_algorithm(struct wpa_supplicant *wpa_s, char* buf, char* reply){
   char *p;
-
   for(p = strtok (buf, "\n"); p != NULL; p = strtok(NULL, "\n"))
     parse_algorithm_option(wpa_s->arbiter, p);
   

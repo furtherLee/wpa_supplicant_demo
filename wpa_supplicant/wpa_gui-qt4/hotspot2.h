@@ -35,6 +35,7 @@ private:
   QString getAccessNetworkType(QString query);
   QString buildAlgOptions();
   QString getOuiCode(const QString &name);
+  QString buildDecisionReason();
   void highlight(QString str);
 public:
   virtual void notify(WpaMsg msg);
