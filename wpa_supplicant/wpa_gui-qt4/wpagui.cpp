@@ -552,7 +552,7 @@ void WpaGui::updateStatus()
 		textEncryption->clear();
 		textSsid->clear();
 		textBssid->clear();
-		textIpAddress->clear();
+		//		textIpAddress->clear();
 
 #ifdef CONFIG_NATIVE_WINDOWS
 		static bool first = true;
@@ -602,7 +602,7 @@ void WpaGui::updateStatus()
 				textSsid->setText(pos);
 			} else if (strcmp(start, "ip_address") == 0) {
 				ipaddr_updated = true;
-				textIpAddress->setText(pos);
+				//				textIpAddress->setText(pos);
 			} else if (strcmp(start, "wpa_state") == 0) {
 				status_updated = true;
 				textStatus->setText(wpaStateTranslate(pos));
@@ -651,8 +651,8 @@ void WpaGui::updateStatus()
 		textSsid->clear();
 	if (!bssid_updated)
 		textBssid->clear();
-	if (!ipaddr_updated)
-		textIpAddress->clear();
+	//	if (!ipaddr_updated)
+	  //		textIpAddress->clear();
 }
 
 
@@ -947,6 +947,9 @@ void WpaGui::processMsg(char *msg)
 				tr("Connection to network established."));
 		QTimer::singleShot(5 * 1000, this, SLOT(showTrayStatus()));
 		stopWpsRun(true);
+
+		/** Well use dhclient here for demo **/
+		system("dhclient wlan0");
 	} else if (str_match(pos, WPS_EVENT_AP_AVAILABLE_PBC)) {
 		wpsStatusText->setText(tr("WPS AP in active PBC mode found"));
 		if (textStatus->text() == "INACTIVE" ||
@@ -1382,7 +1385,16 @@ void WpaGui::createTrayIcon(bool trayOnly)
 	tray_menu->addAction(showAction);
 	tray_menu->addAction(hideAction);
 	tray_menu->addSeparator();
+
+	/** add for hotspot 2 **/
+	hs20Action = new QAction(tr("&Hotspot 2.0"), this);
+	connect(hs20Action, SIGNAL(triggered()), this,
+		SLOT(openHotspot2()));
+	
+	tray_menu->addAction(hs20Action);
+	tray_menu->addSeparator();
 	tray_menu->addAction(quitAction);
+
 
 	tray_icon->setContextMenu(tray_menu);
 
@@ -1400,8 +1412,9 @@ void WpaGui::showTrayMessage(QSystemTrayIcon::MessageIcon type, int sec,
 	if (!QSystemTrayIcon::supportsMessages())
 		return;
 
-	if (isVisible() || !tray_icon || !tray_icon->isVisible())
-		return;
+	//	if (isVisible() || !tray_icon || !tray_icon->isVisible())
+	if (!tray_icon || !tray_icon->isVisible())
+	  return;
 
 	tray_icon->showMessage(qAppName(), msg, type, sec * 1000);
 }

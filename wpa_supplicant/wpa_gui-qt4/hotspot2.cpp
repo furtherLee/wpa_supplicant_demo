@@ -10,10 +10,10 @@
 #include <QScrollBar>
 
 void Hotspot2::binding(){
-  connect(closeButton, SIGNAL(clicked()), this, SLOT(close()));
+  //  connect(closeButton, SIGNAL(clicked()), this, SLOT(close()));
   connect(autoSelectButton, SIGNAL(clicked()), this, SLOT(interworkingSelect()));
-  connect(freshButton, SIGNAL(clicked()), this, SLOT(fresh()));
-  connect(fetchANQPButton, SIGNAL(clicked()), this, SLOT(fetch()));
+  //  connect(freshButton, SIGNAL(clicked()), this, SLOT(fresh()));
+  //  connect(fetchANQPButton, SIGNAL(clicked()), this, SLOT(fetch()));
 }
 
 void Hotspot2::addMap(){
@@ -33,9 +33,9 @@ void Hotspot2::addMap(){
   accessTypeMap.insert("15", new QString("Wildcardx"));
 
   stageColorMap.insert(0, new QString("gainsboro"));
-  stageColorMap.insert(1, new QString("orange"));
-  stageColorMap.insert(2, new QString("lightgreen"));  
-
+  stageColorMap.insert(1, new QString("purple"));
+  stageColorMap.insert(2, new QString("orange"));
+  stageColorMap.insert(3, new QString("lightgreen"));  
 }
 
 QString Hotspot2::getAccessNetworkType(QString query){
@@ -72,6 +72,9 @@ Hotspot2::Hotspot2(QWidget *parent, const char *, bool, Qt::WFlags)
 void Hotspot2::interworkingSelect(){
   char reply[64];
   size_t reply_len;
+  filterStage = 0;
+  wpagui->disconnect();
+  wpagui->showTrayMessage(QSystemTrayIcon::Information, 5, "Start Interworking Select");
   wpagui->ctrlRequest("INTERWORKING_SELECT auto", reply, &reply_len);
 }
 
@@ -96,7 +99,8 @@ void Hotspot2::highlight(QString str){
   if (list.size() != 1)
     return;
   QTreeWidgetItem *item = list.first();
-  QBrush b (QColor(*stageColorMap.value(filterStage)));
+  QColor color(*stageColorMap.value(filterStage));
+  QBrush b (color);
   for (int i = 0; i < hs20APWidget->columnCount(); ++i)
     item->setBackground(i, b);
 
@@ -106,14 +110,15 @@ void Hotspot2::notify(WpaMsg msg){
   QString str = msg.getMsg();
   if (str.startsWith("ANQP fetch completed") || str.startsWith("Arbiter: ANQP Information Received"))
     fresh();
-  
-  if (str.startsWith("All interworking networks available are")){
-    append("Corresponding Color is: " + *stageColorMap.value(filterStage)+ "\n");
+  bool stageChange = false;
+
+  if (str.startsWith("Arbiter: All interworking networks available are")){
     filterStage = 0;
+    stageChange = true;
   }
     
   if (str.endsWith("Filter starts working...")){
-    append("Corresponding Color is: " + *stageColorMap.value(filterStage) + "\n");
+    stageChange =true;
     filterStage++;
   }
   
@@ -125,8 +130,10 @@ void Hotspot2::notify(WpaMsg msg){
 
   if(!str.startsWith("Arbiter: "))
     return;
-
-  append(str.mid(str.indexOf("Arbiter: ") + 9));
+  QString output = str.mid(str.indexOf("Arbiter: ") + 9);
+  if (stageChange)
+    output = "<font color=\"" + *stageColorMap.value(filterStage) + "\">" +  output + "</font>";
+  append(output);
 
 }
 
@@ -225,4 +232,5 @@ void Hotspot2::fresh(){
 	}
 	for (int i = 0; i < hs20APWidget->columnCount(); ++i)
 	  hs20APWidget->resizeColumnToContents(i);
+	hs20APWidget->sortByColumn(2, Qt::DescendingOrder);
 }

@@ -65,6 +65,30 @@ struct dl_list* access_internet_filter(struct dl_list *candidates, void *context
   return candidates;
 }
 
+struct dl_list* free_public_filter(struct dl_list *candidates, void *context){
+  filter_candidate *item = NULL;
+  filter_candidate *wait_to_delete = NULL;
+
+  arbiter_message((struct wpa_supplicant *)context, "Free-Public Filter starts working...");
+
+  dl_list_for_each(item, candidates, filter_candidate, list){
+    if(wait_to_delete){
+      dl_list_del(&wait_to_delete->list);
+      os_free(wait_to_delete);
+      wait_to_delete = NULL;
+    }
+    if (!is_free_public(item->bss))
+      wait_to_delete = item;
+  }
+
+  if(wait_to_delete){
+    dl_list_del(&wait_to_delete->list);
+    os_free(wait_to_delete);
+    wait_to_delete = NULL;
+  }
+
+  return candidates;  
+}
 
 filter_candidate* build_candidate(struct wpa_bss *bss){
   filter_candidate *ret = (filter_candidate *)os_malloc(sizeof(filter_candidate));

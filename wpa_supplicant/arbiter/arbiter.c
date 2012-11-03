@@ -24,9 +24,10 @@ arbiter *arbiter_init(struct wpa_supplicant *wpa_s){
 
   res->state = ARBITER_IDLE;
   res->wpa_s = wpa_s;
-  res->filter_num = 2;
-  res->filters[0] = access_internet_filter;
-  res->filters[1] = random_filter;
+  res->filter_num = 3;
+  res->filters[0] = free_public_filter;
+  res->filters[1] = access_internet_filter;
+  res->filters[2] = random_filter;
   res->set_auto = 0;
   event_init(wpa_s);
   return res;
@@ -140,10 +141,6 @@ static void getAuthMethod(struct wpa_supplicant *wpa_s, char *authMethod, struct
 
   for (i = 0; i < count; ++i)
     if(nai_realm_match(&realms[i], wpa_s->conf->home_realm)){
-
-      ret = os_snprintf(pos, end-pos, "%s: ", realms[i].realm);
-      if(!insert_string(&pos, &end, ret))
-	break;
       for (j = 0; j < realms[i].eap_count; ++j)
 	if(!abiter_append_eap_method(&pos, &end, realms[i].eap[j].method)){
 	  flag = 0;

@@ -103,11 +103,22 @@ int abiter_append_eap_method(char **pos, char **end, u8 method){
   int ret;
 
   if (method == 254)
-    ret = os_snprintf(*pos, *end, "[EPA-EXPANDED]");
+    ret = os_snprintf(*pos, *end-*pos, "[EPA-EXPANDED]");
   else if (method > 52)
-    ret = os_snprintf(*pos, *end, "[UNDEFINED-EAP-METHOD]");
+    ret = os_snprintf(*pos, *end-*pos, "[UNDEFINED-EAP-METHOD]");
   else
-    ret = os_snprintf(*pos, *end, "[%s]", methodMap[method]);
+    ret = os_snprintf(*pos, *end-*pos, "[%s]", methodMap[method]);
 
   return insert_string(pos, end, ret);
+}
+
+int is_free_public(struct wpa_bss *bss){
+  const u8* pos = wpa_bss_get_ie(bss, INTERWORKING_IE_ID);
+  if (pos == NULL || pos[1] < 1){
+    return 0;
+  }
+
+  const u8* ie = pos + 2;
+  int type = ie[0] & 0x0f;
+  return (type == 3)? 1:0;
 }

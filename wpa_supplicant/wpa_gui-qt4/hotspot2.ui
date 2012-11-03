@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>1320</width>
-    <height>994</height>
+    <height>945</height>
    </rect>
   </property>
   <property name="font">
@@ -24,93 +24,6 @@
   <property name="sizeGripEnabled">
    <bool>false</bool>
   </property>
-  <widget class="QLabel" name="arbiterInfoLabel">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>10</y>
-     <width>401</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>14</pointsize>
-     <weight>75</weight>
-     <italic>false</italic>
-     <bold>true</bold>
-    </font>
-   </property>
-   <property name="text">
-    <string>Hotspot 2.0 Auto Selection Procedure</string>
-   </property>
-  </widget>
-  <widget class="QWidget" name="horizontalLayoutWidget">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>950</y>
-     <width>1311</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <layout class="QHBoxLayout" name="horizontalLayout">
-    <item>
-     <spacer name="horizontalSpacer">
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>40</width>
-        <height>20</height>
-       </size>
-      </property>
-     </spacer>
-    </item>
-    <item>
-     <widget class="QPushButton" name="fetchANQPButton">
-      <property name="text">
-       <string>Fetch ANQP</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QPushButton" name="freshButton">
-      <property name="text">
-       <string>Fresh</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QPushButton" name="autoSelectButton">
-      <property name="text">
-       <string>Auto Select</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QPushButton" name="closeButton">
-      <property name="text">
-       <string>Close</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <spacer name="horizontalSpacer_2">
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>40</width>
-        <height>20</height>
-       </size>
-      </property>
-     </spacer>
-    </item>
-   </layout>
-  </widget>
   <widget class="QTreeWidget" name="hs20APWidget">
    <property name="geometry">
     <rect>
@@ -237,18 +150,114 @@
     <string>Found Access Points</string>
    </property>
   </widget>
-  <widget class="QTextEdit" name="arbiterInfoText">
+  <widget class="QWidget" name="verticalLayoutWidget">
    <property name="geometry">
     <rect>
      <x>0</x>
-     <y>40</y>
-     <width>1311</width>
-     <height>371</height>
+     <y>0</y>
+     <width>971</width>
+     <height>421</height>
     </rect>
    </property>
-   <property name="readOnly">
-    <bool>true</bool>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QLabel" name="arbiterInfoLabel">
+      <property name="font">
+       <font>
+        <pointsize>14</pointsize>
+        <weight>75</weight>
+        <italic>false</italic>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Hotspot 2.0 Auto Selection Procedure</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QTextEdit" name="arbiterInfoText">
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="verticalLayoutWidget_2">
+   <property name="geometry">
+    <rect>
+     <x>980</x>
+     <y>0</y>
+     <width>331</width>
+     <height>421</height>
+    </rect>
    </property>
+   <layout class="QVBoxLayout" name="verticalLayout_2">
+    <item>
+     <widget class="QLabel" name="label">
+      <property name="font">
+       <font>
+        <family>Sans Serif</family>
+        <pointsize>14</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>AP Selection Policy</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QCheckBox" name="contractedCheck">
+      <property name="text">
+       <string>Contracted with Home Carrier</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QCheckBox" name="interAcceessCheck">
+      <property name="text">
+       <string>Internet Accessible</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QCheckBox" name="lowFeeCheck">
+      <property name="text">
+       <string>Lower Fee</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QCheckBox" name="ip6Check">
+      <property name="text">
+       <string>IPv6 Support</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <spacer name="verticalSpacer">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>40</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item>
+     <widget class="QPushButton" name="autoSelectButton">
+      <property name="text">
+       <string>Auto Select</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
   </widget>
  </widget>
  <resources/>

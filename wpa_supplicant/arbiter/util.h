@@ -24,4 +24,6 @@ int insert_string(char **pos, char **end, int num);
 
 int abiter_append_eap_method(char **pos, char **end, u8 method);
 
+int is_free_public(struct wpa_bss *bss);
+
 #endif
