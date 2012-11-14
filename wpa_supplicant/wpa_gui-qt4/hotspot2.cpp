@@ -142,6 +142,7 @@ void Hotspot2::interworkingSelect(){
   wpagui->showTrayMessage(QSystemTrayIcon::Information, 5, "Start Interworking Select");
   wpagui->ctrlRequest("INTERWORKING_SELECT auto", reply, &reply_len);
   arbiterInfoText->clear();
+  append("[Auto Discover]");
   fresh();
 }
 
@@ -223,6 +224,7 @@ void Hotspot2::notify(WpaMsg msg){
   bool stageChange = false;
 
   if (str.startsWith("Arbiter: Get ANQP Answers from the following APs: ")){
+    append("\n\n[Auto Select]");
     filterStage = 0;
     stageChange = true;
     colored = true;
@@ -246,6 +248,7 @@ void Hotspot2::notify(WpaMsg msg){
   QString output = str.mid(str.indexOf("Arbiter: ") + 9);
 
   if (output.startsWith("Choose ")){
+    append("\n\n[Auto Connect]");
     QString decision = output.mid(output.indexOf("Choose ") + 7);
     output = "Choose \"" + decision + "\" because it is " + buildDecisionReason(decision);
   }
