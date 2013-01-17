@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>910</width>
-    <height>590</height>
+    <width>1595</width>
+    <height>1012</height>
    </rect>
   </property>
   <property name="font">
@@ -28,15 +28,15 @@
    <property name="geometry">
     <rect>
      <x>0</x>
-     <y>250</y>
-     <width>901</width>
-     <height>331</height>
+     <y>450</y>
+     <width>1581</width>
+     <height>561</height>
     </rect>
    </property>
    <property name="font">
     <font>
      <family>Bitstream Charter</family>
-     <pointsize>11</pointsize>
+     <pointsize>20</pointsize>
      <weight>75</weight>
      <italic>true</italic>
      <bold>true</bold>
@@ -63,13 +63,22 @@
    <attribute name="headerShowSortIndicator" stdset="0">
     <bool>true</bool>
    </attribute>
+   <attribute name="headerCascadingSectionResizes">
+    <bool>true</bool>
+   </attribute>
+   <attribute name="headerMinimumSectionSize">
+    <number>40</number>
+   </attribute>
+   <attribute name="headerShowSortIndicator" stdset="0">
+    <bool>true</bool>
+   </attribute>
    <column>
     <property name="text">
      <string>SSID</string>
     </property>
     <property name="font">
      <font>
-      <pointsize>9</pointsize>
+      <pointsize>20</pointsize>
      </font>
     </property>
     <property name="textAlignment">
@@ -82,7 +91,7 @@
     </property>
     <property name="font">
      <font>
-      <pointsize>9</pointsize>
+      <pointsize>20</pointsize>
      </font>
     </property>
     <property name="textAlignment">
@@ -95,7 +104,7 @@
     </property>
     <property name="font">
      <font>
-      <pointsize>9</pointsize>
+      <pointsize>20</pointsize>
      </font>
     </property>
     <property name="textAlignment">
@@ -108,7 +117,7 @@
     </property>
     <property name="font">
      <font>
-      <pointsize>9</pointsize>
+      <pointsize>20</pointsize>
      </font>
     </property>
     <property name="textAlignment">
@@ -121,7 +130,7 @@
     </property>
     <property name="font">
      <font>
-      <pointsize>9</pointsize>
+      <pointsize>20</pointsize>
      </font>
     </property>
     <property name="textAlignment">
@@ -134,7 +143,7 @@
     </property>
     <property name="font">
      <font>
-      <pointsize>9</pointsize>
+      <pointsize>20</pointsize>
      </font>
     </property>
     <property name="textAlignment">
@@ -151,15 +160,15 @@
    <property name="geometry">
     <rect>
      <x>0</x>
-     <y>230</y>
-     <width>221</width>
+     <y>420</y>
+     <width>271</width>
      <height>20</height>
     </rect>
    </property>
    <property name="font">
     <font>
      <family>Bitstream Charter</family>
-     <pointsize>11</pointsize>
+     <pointsize>22</pointsize>
      <weight>75</weight>
      <italic>true</italic>
      <bold>true</bold>
@@ -174,8 +183,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>611</width>
-     <height>231</height>
+     <width>1171</width>
+     <height>401</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -184,7 +193,7 @@
       <property name="font">
        <font>
         <family>Bitstream Charter</family>
-        <pointsize>11</pointsize>
+        <pointsize>22</pointsize>
         <weight>75</weight>
         <italic>true</italic>
         <bold>true</bold>
@@ -200,7 +209,7 @@
       <property name="font">
        <font>
         <family>Sans Serif</family>
-        <pointsize>11</pointsize>
+        <pointsize>20</pointsize>
         <weight>50</weight>
         <bold>false</bold>
        </font>
@@ -215,10 +224,10 @@
   <widget class="QWidget" name="verticalLayoutWidget_2">
    <property name="geometry">
     <rect>
-     <x>619</x>
+     <x>1180</x>
      <y>0</y>
-     <width>291</width>
-     <height>231</height>
+     <width>401</width>
+     <height>401</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -227,7 +236,7 @@
       <property name="font">
        <font>
         <family>Sans Serif</family>
-        <pointsize>11</pointsize>
+        <pointsize>20</pointsize>
         <weight>75</weight>
         <bold>true</bold>
        </font>
@@ -242,7 +251,7 @@
       <property name="font">
        <font>
         <family>Bitstream Charter</family>
-        <pointsize>11</pointsize>
+        <pointsize>20</pointsize>
        </font>
       </property>
       <property name="text">
@@ -257,7 +266,7 @@
         <property name="font">
          <font>
           <family>Bitstream Charter</family>
-          <pointsize>11</pointsize>
+          <pointsize>20</pointsize>
          </font>
         </property>
         <property name="text">
@@ -270,7 +279,7 @@
         <property name="font">
          <font>
           <family>Bitstream Charter</family>
-          <pointsize>11</pointsize>
+          <pointsize>20</pointsize>
          </font>
         </property>
         <item>
@@ -302,7 +311,7 @@
       <property name="font">
        <font>
         <family>Bitstream Charter</family>
-        <pointsize>11</pointsize>
+        <pointsize>20</pointsize>
        </font>
       </property>
       <property name="text">
@@ -315,7 +324,7 @@
       <property name="font">
        <font>
         <family>Bitstream Charter</family>
-        <pointsize>11</pointsize>
+        <pointsize>20</pointsize>
        </font>
       </property>
       <property name="text">
@@ -331,7 +340,7 @@
       <property name="font">
        <font>
         <family>Bitstream Charter</family>
-        <pointsize>11</pointsize>
+        <pointsize>20</pointsize>
        </font>
       </property>
       <property name="text">
@@ -357,7 +366,7 @@
       <property name="font">
        <font>
         <family>Bitstream Charter</family>
-        <pointsize>11</pointsize>
+        <pointsize>20</pointsize>
        </font>
       </property>
       <property name="text">
