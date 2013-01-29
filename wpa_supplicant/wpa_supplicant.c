@@ -646,6 +646,15 @@ void wpa_supplicant_set_state(struct wpa_supplicant *wpa_s,
 #ifdef CONFIG_P2P
 		wpas_p2p_completed(wpa_s);
 #endif /* CONFIG_P2P */
+
+		/**
+		 * Add osu suport
+		 * Author: Shington
+		 * Modified: 2013.1.29
+		 */
+		on_osu_ap_connected(wpa_s);
+
+
 	} else if (state == WPA_DISCONNECTED || state == WPA_ASSOCIATING ||
 		   state == WPA_ASSOCIATED) {
 		wpa_s->new_connection = 1;

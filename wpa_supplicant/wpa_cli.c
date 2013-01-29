@@ -466,6 +466,18 @@ static int wpa_cli_cmd_fetch_credentials (struct wpa_ctrl *ctrl, int argc, char 
   return wpa_ctrl_command(ctrl, cmd);
 }
 
+static int wpa_cli_cmd_credentials_fetched (struct wpa_ctrl *ctrl, int argc, char *argv[]) {
+  if (argc != 1) {
+    printf ("Undefined parameter list\n");
+    return -1;
+  }
+  
+  char cmd[512];
+  sprintf(cmd, "CREDENTIALS_FETCHED %s", argv[0]);
+  return wpa_ctrl_command(ctrl, cmd);;
+
+}
+
 static int wpa_cli_cmd_status(struct wpa_ctrl *ctrl, int argc, char *argv[])
 {
 	int verbose = argc > 0 && os_strcmp(argv[0], "verbose") == 0;
@@ -3322,6 +3334,8 @@ static struct wpa_cli_cmd wpa_cli_commands[] = {
 	  "= trigger IEEE 802.1X/EAPOL reauthentication" },
 	{ "fetch_credentials", wpa_cli_cmd_fetch_credentials, cli_cmd_flag_none,
 	  "= Fetch Credentials from OSU Server <prodApBssid> <osuApBssid> <uri>"},
+	{ "credentials_fetched", wpa_cli_cmd_credentials_fetched, cli_cmd_flag_none,
+	  "= Notify wpa_supplicant credentials fetched [<name>=<value>]*"},
 	{ NULL, NULL, cli_cmd_flag_none, NULL }
 };
 

@@ -91,21 +91,66 @@ static void osu_connect_osu_ap (struct wpa_supplicant *wpa_s, char *osuApBssid) 
 
 static void osu_client_fetch_credentials(char *uri) {
   // TODO
+  wpa_printf(MSG_INFO, "FETCH CREDENTIALS %s", uri);
 }
 
-static void on_osu_ap_connected(char *uri) {
+void on_osu_ap_connected(struct wpa_supplicant *wpa_s) {
+  // TODO compare osuApBssid and wpa_s->current_ssid->bssid
+  // TODO check whether fetchCredentialsStarted
+  osu_client_fetch_credentials(wpa_s->osu->uri);
   
-  osu_client_fetch_credentials(uri);
-
 }
 
-static void on_osu_client_credentials_fetched() {
+static void on_osu_client_credentials_fetched(struct wpa_supplicant *wpa_s, char *params) {
   
+  if (!wpa_s->osu->fetchCredentialsStarted)
+    return;
   
+  char *p;
+
+  wpa_printf(MSG_INFO, "params is: %s", params);
+  
+  int id = add_network(wpa_s);
+  char prodApBssidStr[64];
+  sprintf(prodApBssidStr, MACSTR, MAC2STR(wpa_s->osu->prodApBssid));
+  
+  int ret = set_network(wpa_s, id, "bssid", prodApBssidStr);
+  char name[256];
+  char value[256];
+
+  for (p = strtok(params, ","); p != NULL; p = strtok(NULL, ",")){
+    int i = 0;
+    
+    while (p[i] != '='){
+      name[i] = p[i];
+      i++;
+    }
+    name[i++]='\0';
+    wpa_printf(MSG_INFO, "name: %s", name);
+
+    int j = 0;
+    while (p[i] != ',') {
+      value[j++] = p[i];
+      i++;
+     }
+    value[j] = '\0';
+
+    wpa_printf(MSG_INFO, "key=%s, value=%s", name, value);
+    ret = set_network(wpa_s, id, name, value);
+  }
+
+  select_network(wpa_s, id);
+
+  wpa_s->osu->fetchCredentialsStarted = 0;
 }
 
 
 int osu_fetch_credentials (struct wpa_supplicant *wpa_s, char* buf, char *reply){
+
+  if (wpa_s->osu->fetchCredentialsStarted)
+    return -1;
+  
+  wpa_s->osu->fetchCredentialsStarted = 1;
   
   char prodApBssidStr[50], osuApBssidStr[50], uri[512];
   
@@ -113,13 +158,22 @@ int osu_fetch_credentials (struct wpa_supplicant *wpa_s, char* buf, char *reply)
   
   hwaddr_aton2(prodApBssidStr, wpa_s->osu->prodApBssid);
   hwaddr_aton2(osuApBssidStr, wpa_s->osu->osuApBssid);
+  memcpy(wpa_s->osu->uri, uri, strlen(uri));
 
   osu_connect_osu_ap(wpa_s, osuApBssidStr);
   
   os_memcpy(reply, "FETCH_CREDENTIALS STARTS!\n", 26);
 
+
   return 26;
 }
+
+int osu_credentials_fetched (struct wpa_supplicant *wpa_s, char* buf, char *reply){
+  on_osu_client_credentials_fetched (wpa_s, buf);
+  memcpy(reply, "OK\n", 3);
+  return 3;
+}
+
 
 struct osu_priv *osu_init(struct wpa_supplicant *wpa_s) {
   struct osu_priv* ret = (struct osu_priv *) os_malloc(sizeof(struct osu_priv));
