@@ -132,7 +132,7 @@ static void on_osu_client_credentials_fetched(struct wpa_supplicant *wpa_s, char
     wpa_printf(MSG_INFO, "name: %s", name);
 
     int j = 0;
-    while (p[i] != ',') {
+    while (p[i] != ',' && p[i] != '\0') {
       value[j++] = p[i];
       i++;
      }
