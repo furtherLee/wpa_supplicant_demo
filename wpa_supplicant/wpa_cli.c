@@ -453,6 +453,19 @@ static int wpa_ctrl_command(struct wpa_ctrl *ctrl, char *cmd)
 }
 
 
+static int wpa_cli_cmd_fetch_credentials (struct wpa_ctrl *ctrl, int argc, char *argv[]) {
+  if (argc != 3){
+    printf ("Invalid argument number\n");
+    return -1;
+  }
+
+  char cmd[256];
+
+  sprintf(cmd, "FETCH_CREDENTIALS %s %s %s", argv[0], argv[1], argv[2]);
+  
+  return wpa_ctrl_command(ctrl, cmd);
+}
+
 static int wpa_cli_cmd_status(struct wpa_ctrl *ctrl, int argc, char *argv[])
 {
 	int verbose = argc > 0 && os_strcmp(argv[0], "verbose") == 0;
@@ -3307,6 +3320,8 @@ static struct wpa_cli_cmd wpa_cli_commands[] = {
 	  "= get signal parameters" },
 	{ "reauthenticate", wpa_cli_cmd_reauthenticate, cli_cmd_flag_none,
 	  "= trigger IEEE 802.1X/EAPOL reauthentication" },
+	{ "fetch_credentials", wpa_cli_cmd_fetch_credentials, cli_cmd_flag_none,
+	  "= Fetch Credentials from OSU Server <prodApBssid> <osuApBssid> <uri>"},
 	{ NULL, NULL, cli_cmd_flag_none, NULL }
 };
 
