@@ -55,6 +55,7 @@
 #include "offchannel.h"
 #include "hs20_supplicant.h"
 #include "arbiter/arbiter.h"
+#include "osu.h"
 
 const char *wpa_supplicant_version =
 "wpa_supplicant v" VERSION_STR "\n"
@@ -484,6 +485,8 @@ static void wpa_supplicant_cleanup(struct wpa_supplicant *wpa_s)
 	arbiter_deinit(wpa_s->arbiter);
 	wpa_s->arbiter = NULL;
 #endif
+	osu_deinit(wpa_s->osu);
+	wpa_s->osu = NULL;
 }
 
 
@@ -2408,6 +2411,11 @@ next_driver:
 	arbiter* arbiter = arbiter_init(wpa_s);
 	wpa_s->arbiter = arbiter;
 #endif
+	
+	struct osu_priv* osu_priv = osu_init(wpa_s);
+	// TODO check osu_priv is null
+	wpa_s->osu = osu_priv;
+	
 	return 0;
 }
 

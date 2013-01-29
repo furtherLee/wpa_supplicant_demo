@@ -6,16 +6,127 @@
 #include "bss.h"
 #include "interworking.h"
 #include "config.h"
+#include "notify.h"
+#include "rsn_supp/wpa.h"
+#include "eapol_supp/eapol_supp_sm.h"
 #include "osu.h"
+
+static int add_network(struct wpa_supplicant *wpa_s) {
+  struct wpa_ssid *ssid;
+  
+  ssid = wpa_config_add_network(wpa_s->conf);
+  
+  if (ssid == NULL)
+    return -1;
+  
+  wpas_notify_network_added(wpa_s, ssid);
+  
+  ssid->disabled = 1;
+  wpa_config_set_network_defaults(ssid);
+  
+  return ssid->id;
+}
+
+static int set_network(struct wpa_supplicant *wpa_s, int id, char *name, char* value) {
+	struct wpa_ssid *ssid;
+
+	ssid = wpa_config_get_network(wpa_s->conf, id);
+	if (ssid == NULL) {
+		wpa_printf(MSG_DEBUG, "CTRL_IFACE: Could not find network "
+			   "id=%d", id);
+		return -1;
+	}
+
+	if (wpa_config_set(ssid, name, value, 0) < 0) {
+		wpa_printf(MSG_DEBUG, "CTRL_IFACE: Failed to set network "
+			   "variable '%s'", name);
+		return -1;
+	}
+
+	wpa_sm_pmksa_cache_flush(wpa_s->wpa, ssid);
+
+	if (wpa_s->current_ssid == ssid || wpa_s->current_ssid == NULL) {
+		/*
+		 * Invalidate the EAP session cache if anything in the current
+		 * or previously used configuration changes.
+		 */
+		eapol_sm_invalidate_cached_session(wpa_s->eapol);
+	}
+
+	if ((os_strcmp(name, "psk") == 0 &&
+	     value[0] == '"' && ssid->ssid_len) ||
+	    (os_strcmp(name, "ssid") == 0 && ssid->passphrase))
+		wpa_config_update_psk(ssid);
+	else if (os_strcmp(name, "priority") == 0)
+		wpa_config_update_prio_list(wpa_s->conf);
+
+	return 0;
+}
+
+static int select_network(struct wpa_supplicant *wpa_s, int id) {
+  struct wpa_ssid* ssid = wpa_config_get_network(wpa_s->conf, id);
+  if (ssid == NULL) {
+    wpa_printf(MSG_DEBUG, "CTRL_IFACE: Could not find "
+	       "network id=%d", id);
+    return -1;
+  }
+  if (ssid->disabled == 2) {
+    wpa_printf(MSG_DEBUG, "CTRL_IFACE: Cannot use "
+	       "SELECT_NETWORK with persistent P2P group");
+    return -1;
+  }
+
+  wpa_supplicant_select_network(wpa_s, ssid);
+  
+  return 0;
+}
+
+
+static void osu_connect_osu_ap (struct wpa_supplicant *wpa_s, char *osuApBssid) {
+  int id = add_network(wpa_s);
+  int ret = set_network(wpa_s, id, "bssid", osuApBssid);
+  ret = set_network(wpa_s, id, "key_mgmt", "NONE");
+  ret = select_network(wpa_s, id);
+}
+
+static void osu_client_fetch_credentials(char *uri) {
+  // TODO
+}
+
+static void on_osu_ap_connected(char *uri) {
+  
+  osu_client_fetch_credentials(uri);
+
+}
+
+static void on_osu_client_credentials_fetched() {
+  
+  
+}
+
 
 int osu_fetch_credentials (struct wpa_supplicant *wpa_s, char* buf, char *reply){
   
-  char prodApBssid[50], osuApBssid[50], uri[512];
+  char prodApBssidStr[50], osuApBssidStr[50], uri[512];
   
-  sscanf(buf, "%s %s %s", prodApBssid, osuApBssid, uri);
-  wpa_printf(MSG_INFO, "%s\n%s\n%s\n", prodApBssid, osuApBssid, uri);
+  sscanf(buf, "%s %s %s", prodApBssidStr, osuApBssidStr, uri);
+  
+  hwaddr_aton2(prodApBssidStr, wpa_s->osu->prodApBssid);
+  hwaddr_aton2(osuApBssidStr, wpa_s->osu->osuApBssid);
+
+  osu_connect_osu_ap(wpa_s, osuApBssidStr);
   
   os_memcpy(reply, "FETCH_CREDENTIALS STARTS!\n", 26);
 
   return 26;
+}
+
+struct osu_priv *osu_init(struct wpa_supplicant *wpa_s) {
+  struct osu_priv* ret = (struct osu_priv *) os_malloc(sizeof(struct osu_priv));
+  ret->fetchCredentialsStarted = 0;
+  return ret;
+}
+
+void osu_deinit(struct osu_priv *osu){
+  free(osu);
 }

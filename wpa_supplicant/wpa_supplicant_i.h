@@ -39,6 +39,7 @@ struct wpa_bss;
 struct wpa_scan_results;
 struct hostapd_hw_modes;
 struct arbiter_type;
+struct osu_priv;
 
 /*
  * Forward declarations of private structures used within the ctrl_iface
@@ -534,6 +535,8 @@ struct wpa_supplicant {
 #ifdef CONFIG_ARBITER
   struct arbiter_type *arbiter;
 #endif
+
+  struct osu_priv *osu;
 
 };
 
