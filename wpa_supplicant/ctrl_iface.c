@@ -44,6 +44,7 @@
 #include "blacklist.h"
 #include "wpas_glue.h"
 #include "arbiter/arbiter.h"
+#include "osu.h"
 
 extern struct wpa_driver_ops *wpa_drivers[];
 
@@ -3989,6 +3990,16 @@ char * wpa_supplicant_ctrl_iface_process(struct wpa_supplicant *wpa_s,
 	else if (os_strncmp(buf, "SET_ARBITER_ALGORITHM ", 22) == 0){
 	  reply_len = arbiter_set_algorithm(wpa_s, buf+22, reply);
 	}
+	/**
+	 * Add OSU Support
+	 * Author: Shington
+	 * Modified: 2013.1.29
+	 */
+	else if (os_strncmp(buf, "FETCH_CREDENTIALS ", 18) == 0) {
+	  reply_len = osu_fetch_credentials(
+					    wpa_s, buf + 18, reply);
+	}
+
 	/* Support for GUI end */
 	else if (os_strncmp(buf, "SIGNAL_POLL", 11) == 0) {
 		reply_len = wpa_supplicant_signal_poll(wpa_s, reply,

@@ -67,6 +67,8 @@ OBJS += arbiter/util.o
 CFLAGS += -DCONFIG_ARBITER
 endif
 
+OBJS += osu.o
+
 ifndef CONFIG_OS
 ifdef CONFIG_NATIVE_WINDOWS
 CONFIG_OS=win32
