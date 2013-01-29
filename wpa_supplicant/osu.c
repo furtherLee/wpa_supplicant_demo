@@ -89,15 +89,18 @@ static void osu_connect_osu_ap (struct wpa_supplicant *wpa_s, char *osuApBssid) 
   ret = select_network(wpa_s, id);
 }
 
-static void osu_client_fetch_credentials(char *uri) {
+static void osu_client_fetch_credentials(struct wpa_supplicant *wpa_s, char *uri) {
   // TODO
+  char cmd[1024];
+  sprintf(cmd, "OSU_EVENT_FETCH_REQUEST %s", uri);
   wpa_printf(MSG_INFO, "FETCH CREDENTIALS %s", uri);
+  wpa_msg_ctrl(wpa_s, MSG_INFO, cmd);
 }
 
 void on_osu_ap_connected(struct wpa_supplicant *wpa_s) {
   // TODO compare osuApBssid and wpa_s->current_ssid->bssid
   // TODO check whether fetchCredentialsStarted
-  osu_client_fetch_credentials(wpa_s->osu->uri);
+  osu_client_fetch_credentials(wpa_s, wpa_s->osu->uri);
   
 }
 
